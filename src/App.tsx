@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import DashboardLayout from "./layouts/dashboard-layout";
 
-function App() {
-  const [count, setCount] = useState(0)
+const LazyHomePage = React.lazy(() => import("@/pages/home/page"));
+const LazyUsersListPage = React.lazy(() => import("@/pages/users/list/page"));
 
-  return (
+// Pets List Page
+const LazyPetsListPage = React.lazy(() => import("@/pages/pets/list/page"));
+
+// Teams List Page
+const LazyTeamsListPage = React.lazy(() => import("@/pages/teams/list/page"));
+const LazyAddTeamPage = React.lazy(() => import("@/pages/teams/add/page"));
+const LazyEditTeamPage = React.lazy(() => import("@/pages/teams/edit/page"));
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Route path="/" element={<DashboardLayout />}>
+        <Route index element={<LazyHomePage />} />
+        <Route path="users" element={<LazyUsersListPage />} />
+        <Route path="pets">
+          <Route index element={<LazyPetsListPage />} />
+        </Route>
+        <Route path="teams">
+          <Route index element={<LazyTeamsListPage />} />
+          <Route path="add" element={<LazyAddTeamPage />} />
+          <Route path="edit/:teamId" element={<LazyEditTeamPage />} />
+        </Route>
+      </Route>
     </>
   )
-}
+);
 
-export default App
+const App = () => {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <RouterProvider router={router} />
+    </React.Suspense>
+  );
+};
+
+export default App;

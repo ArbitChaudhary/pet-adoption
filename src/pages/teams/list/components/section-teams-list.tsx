@@ -1,0 +1,39 @@
+import { Box, Button, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import TeamsTableContainer from "./teams-table-container";
+import { useNavigate } from "react-router-dom";
+
+function SectionTeamsList() {
+  const theme = useTheme();
+  const navigate = useNavigate();
+
+  // navigate to add team page
+  const handleAddTeam = () => {
+    navigate("/teams/add");
+  };
+
+  return (
+    <Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 4 }}>
+        <Button
+          variant="outlined"
+          onClick={handleAddTeam}
+          sx={{
+            bgcolor: theme.palette.primary.main,
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+          }}
+        >
+          <AddBoxIcon fontSize="small" />
+          <Typography>New Team</Typography>
+        </Button>
+      </Box>
+      <TeamsTableContainer />
+    </Box>
+  );
+}
+
+export default SectionTeamsList;

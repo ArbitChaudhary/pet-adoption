@@ -1,0 +1,4 @@
+const WIDTH = 220;
+const COLLAPSED_WIDTH = 80;
+
+export { WIDTH, COLLAPSED_WIDTH };
