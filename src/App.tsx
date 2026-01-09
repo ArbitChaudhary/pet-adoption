@@ -6,6 +6,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard-layout";
+import ProtectedRoute from "./components/auth/protected-route";
 
 const LazyHomePage = React.lazy(() => import("@/pages/home/page"));
 const LazyUsersListPage = React.lazy(() => import("@/pages/users/list/page"));
@@ -20,10 +21,21 @@ const LazyTeamsListPage = React.lazy(() => import("@/pages/teams/list/page"));
 const LazyAddTeamPage = React.lazy(() => import("@/pages/teams/add/page"));
 const LazyEditTeamPage = React.lazy(() => import("@/pages/teams/edit/page"));
 
+//auth
+const LazyLoginPage = React.lazy(() => import("@/pages/auth/login/page"));
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<DashboardLayout />}>
+      <Route path="/login" element={<LazyLoginPage />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<LazyHomePage />} />
         <Route path="users" element={<LazyUsersListPage />} />
         <Route path="pets">

@@ -6,6 +6,7 @@ interface LoadingButtonProps {
   disabled?: boolean;
   buttonText: string;
   type?: "button" | "submit" | "reset";
+  width?: string | number;
 }
 
 const LoadingButtom = ({
@@ -14,6 +15,7 @@ const LoadingButtom = ({
   disabled,
   buttonText,
   type = "button",
+  width = "100%",
 }: LoadingButtonProps) => {
   return (
     <Button
@@ -23,6 +25,7 @@ const LoadingButtom = ({
       type={type}
       sx={{
         minWidth: "120px",
+        width: width,
       }}
       size="medium"
     >
