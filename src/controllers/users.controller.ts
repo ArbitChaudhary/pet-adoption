@@ -11,13 +11,13 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const createUser = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
+  const { email } = req.body;
   try {
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
       return res.status(403).json({ message: "Email already exists" });
     }
-    const newUser = await User.create({ name, email, password });
+    const newUser = await User.create(req.body);
     res.status(201).json({ user: newUser });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
