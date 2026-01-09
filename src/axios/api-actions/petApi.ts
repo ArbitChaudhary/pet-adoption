@@ -1,3 +1,4 @@
+import type { PetFormData } from "@/pages/pets/common/pets-types";
 import { api } from "../axios";
 
 export default {
@@ -7,10 +8,13 @@ export default {
   getPetById(id: string) {
     return api.get(`/pets/${id}`);
   },
-  addPet(data: any) {
+  addPet(data: PetFormData) {
     return api.post("/pets", data);
   },
-  updatePet(id: string, data: any) {
+  updatePet(id: string, data: PetFormData) {
     return api.patch(`/pets/${id}`, data);
+  },
+  deletePet(id: string) {
+    return api.delete(`/pets/${id}`);
   },
 };

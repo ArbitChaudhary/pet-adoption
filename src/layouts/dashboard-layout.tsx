@@ -7,7 +7,7 @@ function DashboardLayout() {
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", gap: 2 }}>
       <Sidebar />
-      <Box sx={{ flexGrow: 1, mr: 2 }}>
+      <Box sx={{ flexGrow: 1, mr: 2, minWidth: 0 }}>
         <Navbar />
 
         <Outlet />

@@ -2,7 +2,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import type { IUser } from "../../common/users-type";
 import type { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { Avatar, Box, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 interface UserTableProps {
@@ -63,9 +62,6 @@ const columns: GridColDef<IUser>[] = [
       >
         <IconButton size="medium">
           <VisibilityIcon fontSize="medium" sx={{ color: "primary.main" }} />
-        </IconButton>
-        <IconButton size="medium">
-          <DeleteIcon fontSize="medium" sx={{ color: "error.main" }} />
         </IconButton>
       </Box>
     ),

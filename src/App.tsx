@@ -12,6 +12,8 @@ const LazyUsersListPage = React.lazy(() => import("@/pages/users/list/page"));
 
 // Pets List Page
 const LazyPetsListPage = React.lazy(() => import("@/pages/pets/list/page"));
+const LazyAddPetPage = React.lazy(() => import("@/pages/pets/add/page"));
+const LazyEditPetPage = React.lazy(() => import("@/pages/pets/edit/page"));
 
 // Teams List Page
 const LazyTeamsListPage = React.lazy(() => import("@/pages/teams/list/page"));
@@ -26,6 +28,8 @@ const router = createBrowserRouter(
         <Route path="users" element={<LazyUsersListPage />} />
         <Route path="pets">
           <Route index element={<LazyPetsListPage />} />
+          <Route path="add" element={<LazyAddPetPage />} />
+          <Route path="edit/:petId" element={<LazyEditPetPage />} />
         </Route>
         <Route path="teams">
           <Route index element={<LazyTeamsListPage />} />

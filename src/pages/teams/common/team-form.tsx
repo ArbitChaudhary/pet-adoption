@@ -20,7 +20,6 @@ const TeamForm = ({
   mode = "add",
   isLoading = false,
 }: TeamFormProps) => {
-  console.log("Default Values:", defaultValues);
   const {
     control,
     handleSubmit,

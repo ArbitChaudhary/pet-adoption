@@ -5,7 +5,7 @@ import Header from "@/components/ui/headers/header";
 import { useAddTeamMutation } from "../../common/team-api";
 
 const SectionAddTeam = () => {
-  const { mutateAsync, isLoading } = useAddTeamMutation();
+  const { mutateAsync, isPending } = useAddTeamMutation();
   const onSubmit = async (data: TeamInput) => {
     try {
       await mutateAsync(data);
@@ -19,7 +19,7 @@ const SectionAddTeam = () => {
         title="Add New Team Member"
         subtitle="Add a new member to you family"
       />
-      <TeamForm onSubmit={onSubmit} mode="add" isLoading={isLoading} />
+      <TeamForm onSubmit={onSubmit} mode="add" isLoading={isPending} />
     </Box>
   );
 };

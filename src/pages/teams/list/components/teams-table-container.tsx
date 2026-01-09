@@ -9,10 +9,11 @@ import { useNavigate } from "react-router-dom";
 function TeamsTableContainer() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [selectedTeamId, setSelectedTeamId] = useState<string>("");
+
   const navigate = useNavigate();
   const { data: teams, isLoading } = useGetTeamsQuery();
   const { isPending: isDeleting, mutateAsync } = useDeleteTeamMutation();
-  const memoizedTeams = useMemo(() => teams?.teams || [], [teams]);
+  const memoizedTeams = useMemo(() => (teams?.teams as ITeam[]) || [], [teams]);
 
   const handleDeleteModalOpen = () => {
     setIsDeleteModalOpen(true);
