@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ControlledTextEditor from "@/components/reusables/controlled-text-editor";
 import ControlledSwitch from "@/components/reusables/controlled-switch";
 import ControlledSelect from "@/components/reusables/controlled-select";
+import ControlledFileUpload from "@/components/reusables/controlled-file-upload";
 
 interface PetFormProps {
   onSubmit: (data: PetFormData) => void;
@@ -85,7 +86,7 @@ const PetForm = ({
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
-          <ControlledInputField
+          <ControlledFileUpload
             control={control}
             name="image"
             label="Image URL"
@@ -166,11 +167,12 @@ const PetForm = ({
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
-          <ControlledInputField
+          <ControlledFileUpload
             control={control}
             name="gallery"
             label="Gallery"
             errors={errors}
+            multiple={true}
           />
         </Grid>
 

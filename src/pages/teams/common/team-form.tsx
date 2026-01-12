@@ -6,6 +6,7 @@ import { Grid } from "@mui/material";
 import LoadingButtom from "@/components/ui/buttons/loading-button";
 import ControlledTextEditor from "@/components/reusables/controlled-text-editor";
 import ControlledPhoneInput from "@/components/reusables/controlled-phone-input";
+import ControlledFileUpload from "@/components/reusables/controlled-file-upload";
 
 interface TeamFormProps {
   onSubmit: (data: TeamInput) => void;
@@ -71,6 +72,14 @@ const TeamForm = ({
             errors={errors}
           />
         </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <ControlledFileUpload
+            control={control}
+            name="profileImage"
+            label="Upload Profile Image"
+            errors={errors}
+          />
+        </Grid>
         <Grid size={12}>
           <ControlledTextEditor
             control={control}
@@ -79,6 +88,7 @@ const TeamForm = ({
             errors={errors}
           />
         </Grid>
+
         <Grid size={12}>
           <LoadingButtom
             buttonText={mode === "add" ? "Add Team" : "Save Changes"}

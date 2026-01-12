@@ -155,7 +155,9 @@ const PetsTable = ({
       ),
     },
   ];
-  return <DataGrid rows={pets} getRowId={(row) => row._id} columns={columns} />;
+  return (
+    <DataGrid rows={pets} getRowId={(row) => row?._id} columns={columns} />
+  );
 };
 
 export default PetsTable;

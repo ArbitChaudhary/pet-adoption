@@ -36,12 +36,15 @@ export const petSchema = z.object({
     .min(0, "Age cannot be negative"),
   gender: z.string().optional(),
   dimension: z.string({ error: "Dimension is required" }),
-  image: z.string().optional(),
+  image: z.union([
+    z.string({ error: "Image is required" }),
+    z.instanceof(File, { message: "Image is required" }),
+  ]),
   description: z.string().optional(),
   disabled: z.boolean().optional(),
   disability: z.string().optional(),
   isAvailable: z.boolean().default(true),
-  gallery: z.array(z.string()).optional(),
+  gallery: z.array(z.union([z.string(), z.instanceof(File)])).optional(),
   price: z.coerce
     .number({ error: "Price must be a number" })
     .min(0, "Price cannot be negative"),

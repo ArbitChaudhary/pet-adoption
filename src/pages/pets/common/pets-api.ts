@@ -73,9 +73,11 @@ export const useUpdatePetMutation = () => {
       const result = await petApi.updatePet(data?.id, data?.newData);
       return result.data;
     },
-    onMutate: (data) => {
-      queryClient.cancelQueries({ queryKey: petsQueryKeys.list() });
-      queryClient.cancelQueries({ queryKey: petsQueryKeys.detail(data?.id) });
+    onMutate: async (data) => {
+      await queryClient.cancelQueries({ queryKey: petsQueryKeys.list() });
+      await queryClient.cancelQueries({
+        queryKey: petsQueryKeys.detail(data?.id),
+      });
 
       const previousList = queryClient.getQueryData(petsQueryKeys.list());
       const previousPet = queryClient.getQueryData(
@@ -85,35 +87,39 @@ export const useUpdatePetMutation = () => {
       if (previousPet) {
         queryClient.setQueryData(petsQueryKeys.detail(data.id), {
           ...previousPet,
-          ...data.newData,
+          ...data?.newData,
         });
       }
       queryClient.setQueriesData(
         {
           queryKey: petsQueryKeys.list(),
         },
-        (old: { data: IPet[] | undefined } | undefined) => {
-          if (!old?.data) {
-            return { data: [data.newData as IPet] };
+        (old: IPet[] | undefined) => {
+          if (!old) {
+            return [data.newData as IPet];
           }
-          return { data: [...old.data, data.newData as IPet] };
+          return old.map((pet) =>
+            pet?._id === data?.id ? { ...pet, ...data.newData } : pet
+          );
         }
       );
-      return { previousList, previousPet, id: data.id };
+      return { newData: data.newData, previousList, previousPet };
     },
     onError: (err, data, context) => {
       console.log("Error updating pet:", err, data);
       queryClient.setQueryData(petsQueryKeys.list(), context?.previousList);
       queryClient.setQueryData(
-        petsQueryKeys.detail(data?.id),
+        petsQueryKeys.detail(data?.id as string),
         context?.previousPet
       );
     },
     onSuccess: (newPet) => {
-      queryClient.invalidateQueries({ queryKey: petsQueryKeys.list() });
-      queryClient.invalidateQueries({
-        queryKey: petsQueryKeys.detail(newPet?._id),
-      });
+      queryClient.invalidateQueries({ queryKey: petsQueryKeys.lists() });
+      if (newPet)
+        queryClient.invalidateQueries({
+          queryKey: petsQueryKeys.detail(newPet?.pet?._id),
+        });
+      // queryClient.setQueryData(petsQueryKeys.detail(newPet?.data?._id), newPet);
     },
   });
 };

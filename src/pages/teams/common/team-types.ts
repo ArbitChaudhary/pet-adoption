@@ -20,7 +20,7 @@ export const teamSchema = z.object({
     .min(1, "Description is required"),
   post: z.string().optional(),
   profession: z.string().optional(),
-  profileImage: z.string().optional(),
+  profileImage: z.union([z.string(), z.instanceof(File)]).optional(),
   email: z.string().email("Invalid email address"),
   phoneNumber: z.string().optional(),
 });
