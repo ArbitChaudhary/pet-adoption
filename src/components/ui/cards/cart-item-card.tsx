@@ -17,8 +17,8 @@ const CartItemCard = ({ cartItem }: CartItemCardProps) => {
       className="bg-card rounded-2xl p-4 shadow-soft border border-border/50 flex gap-4"
     >
       <Image
-        src={(cartItem?.petImage as string) || ""}
-        alt={cartItem.petName}
+        src={(cartItem?.image as string) || ""}
+        alt={cartItem.name}
         height={96}
         width={96}
         className="w-24 h-24 rounded-xl object-cover relative"
@@ -28,10 +28,10 @@ const CartItemCard = ({ cartItem }: CartItemCardProps) => {
           className="font-bold text-lg"
           style={{ fontFamily: "Fredoka, sans-serif" }}
         >
-          {cartItem.petName}
+          {cartItem.name}
         </h3>
-        <p className="text-sm text-muted-foreground">{cartItem.petBreed}</p>
-        <p className="text-primary font-bold mt-2">${cartItem?.petPrice}</p>
+        <p className="text-sm text-muted-foreground">{cartItem.breed}</p>
+        <p className="text-primary font-bold mt-2">${cartItem?.price}</p>
       </div>
       <Button
         variant="ghost"

@@ -3,7 +3,7 @@
 import { useAppSelector } from "@/hooks/redux";
 
 const OrderSummary = () => {
-  const { cart } = useAppSelector((state) => state.cart);
+  const { cart, totalAmount } = useAppSelector((state) => state.cart);
 
   return (
     <div className="lg:col-span-1">
@@ -18,8 +18,8 @@ const OrderSummary = () => {
         <div className="space-y-3 mb-6">
           {cart.map((pet) => (
             <div key={pet.petId} className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{pet.petName}</span>
-              <span>${pet?.petPrice}</span>
+              <span className="text-muted-foreground">{pet.name}</span>
+              <span>${pet?.price}</span>
             </div>
           ))}
         </div>
@@ -27,7 +27,7 @@ const OrderSummary = () => {
         <div className="border-t border-border pt-4">
           <div className="flex justify-between font-bold text-lg">
             <span>Total</span>
-            <span className="text-primary">0</span>
+            <span className="text-primary">${totalAmount}</span>
           </div>
           <p className="text-xs text-muted-foreground mt-2">
             Adoption fee includes vaccinations, microchip & health check

@@ -10,6 +10,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import OrderSummary from "./order-summary";
 import CartItemCard from "@/components/ui/cards/cart-item-card";
+import OrderForm from "./order-form";
 
 const SectionCheckout = () => {
   const { user } = useAppSelector((state) => state.global);
@@ -82,86 +83,7 @@ const SectionCheckout = () => {
               >
                 Your Information
               </h2>
-
-              <form className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
-                    <Input
-                      id="fullName"
-                      //   value={formData.fullName}
-                      //   onChange={(e) =>
-                      //     setFormData({ ...formData, fullName: e.target.value })
-                      //   }
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      //   value={formData.email}
-                      //   onChange={(e) =>
-                      //     setFormData({ ...formData, email: e.target.value })
-                      //   }
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      //   value={formData.phone}
-                      //   onChange={(e) =>
-                      //     setFormData({ ...formData, phone: e.target.value })
-                      //   }
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Address</Label>
-                    <Input
-                      id="address"
-                      //   value={formData.address}
-                      //   onChange={(e) =>
-                      //     setFormData({ ...formData, address: e.target.value })
-                      //   }
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">
-                    Why do you want to adopt? (Optional)
-                  </Label>
-                  <Textarea
-                    id="message"
-                    // value={formData.message}
-                    // onChange={(e) =>
-                    //   setFormData({ ...formData, message: e.target.value })
-                    // }
-                    rows={4}
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full text-lg py-6"
-                  //   disabled={isSubmitting}
-                >
-                  Submit
-                  {/* {isSubmitting
-                    ? "Submitting..."
-                    : "Submit Adoption Application"} */}
-                </Button>
-              </form>
+              <OrderForm />
             </div>
           </div>
 

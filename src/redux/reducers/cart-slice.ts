@@ -2,13 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ICartItem {
   petId: string;
-  petName: string;
-  petBreed: string;
-  petAge?: number;
-  petPrice: number;
-  petCategory: string;
-  petGender?: string;
-  petImage?: string;
+  name: string;
+  breed: string;
+  age?: number;
+  price: number;
+  category: string;
+  gender?: string;
+  dimension?: string;
+  image?: string;
 }
 
 const initialState = {
@@ -33,7 +34,7 @@ export const cartSlice = createSlice({
         state.cart.push(newItem);
         state.totalQuantity++;
         state.totalAmount = state.cart.reduce(
-          (acc, item) => acc + item.petPrice,
+          (acc, item) => acc + item.price,
           0
         );
       }
@@ -47,7 +48,7 @@ export const cartSlice = createSlice({
         state.cart = state.cart.filter((item) => item.petId !== id);
         state.totalQuantity--;
         state.totalAmount = state.cart.reduce(
-          (acc, item) => acc + item.petPrice,
+          (acc, item) => acc + item.price,
           0
         );
       }

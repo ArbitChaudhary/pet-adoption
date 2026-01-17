@@ -16,13 +16,14 @@ const Details = ({ pet }: DetailsProps) => {
     dispatch(
       addToCart({
         petId: pet?._id,
-        petName: pet?.name,
-        petBreed: pet?.breed,
-        petAge: pet?.age,
-        petPrice: pet?.price,
-        petCategory: pet?.category,
-        petGender: pet?.gender,
-        petImage: pet?.image,
+        name: pet?.name,
+        breed: pet?.breed,
+        age: pet?.age,
+        price: pet?.price,
+        category: pet?.category,
+        gender: pet?.gender,
+        dimension: pet?.dimension,
+        image: pet?.image,
       })
     );
   };

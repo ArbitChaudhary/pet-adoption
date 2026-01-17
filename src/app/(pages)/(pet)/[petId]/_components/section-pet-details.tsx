@@ -1,8 +1,6 @@
 "use client";
 
-import { Pet, pets } from "@/data/pets";
 import ImageBox from "./image-box";
-import { StaticImageData } from "next/image";
 import Details from "./details";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
