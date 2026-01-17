@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PetCategory } from "@/data/pets";
 import { Bird, Cat, Dog, Search, X } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 const categories: {
   id: PetCategory | "all";
@@ -22,6 +24,19 @@ function SearchSection() {
   const [selectedCategory, setSelectedCategory] = React.useState<
     PetCategory | "all"
   >("all");
+  const { replace } = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handleSearch = useDebouncedCallback((term) => {
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set("search", term);
+    } else {
+      params.delete("search");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }, 300);
   return (
     <section className="py-12 md:py-20 gradient-hero">
       <div className="container text-center">
@@ -43,9 +58,10 @@ function SearchSection() {
             <Input
               type="text"
               placeholder="Search by name, breed, or description..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              // value={searchQuery}
               className="pl-12 h-14 rounded-2xl bg-background text-base shadow-soft"
+              onChange={(e) => handleSearch(e.target.value)}
+              defaultValue={searchParams.get("search")?.toString()}
             />
             {searchQuery && (
               <button

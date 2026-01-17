@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import SectionTeamDetails from "./_components/section-team-details";
+import PageLoader from "@/components/page-loader/page-loader";
 
 async function TeamDetailsPage({ params }: { params: { teamId: string } }) {
   const { teamId } = await params;
@@ -9,7 +11,11 @@ async function TeamDetailsPage({ params }: { params: { teamId: string } }) {
     throw new Error(`Failed to fetch team details `);
   }
   const teamData = await response.json();
-  return <SectionTeamDetails teamId={teamId} team={teamData} />;
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <SectionTeamDetails teamId={teamId} team={teamData} />
+    </Suspense>
+  );
 }
 
 export default TeamDetailsPage;

@@ -1,11 +1,31 @@
+"use client";
+
+import { IPet } from "@/app/(pages)/pets/_common/pet-types";
 import { Button } from "@/components/ui/button";
-import { Pet } from "@/data/pets";
 import { Calendar, PawPrint } from "lucide-react";
+import Description from "./description";
+import { useAppDispatch } from "@/hooks/redux";
+import { addToCart } from "@/redux/reducers/cart-slice";
 
 interface DetailsProps {
-  pet: Pet;
+  pet: IPet;
 }
 const Details = ({ pet }: DetailsProps) => {
+  const dispatch = useAppDispatch();
+  const handleAdoptNow = () => {
+    dispatch(
+      addToCart({
+        petId: pet?._id,
+        petName: pet?.name,
+        petBreed: pet?.breed,
+        petAge: pet?.age,
+        petPrice: pet?.price,
+        petCategory: pet?.category,
+        petGender: pet?.gender,
+        petImage: pet?.image,
+      })
+    );
+  };
   return (
     <div className="space-y-6">
       <div>
@@ -29,39 +49,16 @@ const Details = ({ pet }: DetailsProps) => {
         </div>
       </div>
 
-      <div className="bg-card rounded-2xl p-6 shadow-soft border border-border/50">
-        <h2
-          className="text-xl font-bold mb-3"
-          style={{ fontFamily: "Fredoka, sans-serif" }}
-        >
-          About {pet.name}
-        </h2>
-        <p className="text-muted-foreground leading-relaxed">
-          {pet.description}
-        </p>
-        <p className="text-muted-foreground leading-relaxed mt-4">
-          {pet.name} is looking for a loving forever home. Our adoption process
-          ensures that every pet finds the perfect match. When you adopt from
-          us, you&apos;re not just getting a pet – you&apos;re gaining a loyal
-          companion who will bring joy to your life every day.
-        </p>
-      </div>
+      <Description description={pet?.description} name={pet?.name} />
 
-      <div className="bg-gradient-warm rounded-2xl p-6 text-primary-foreground">
+      <div className="bg-gradient-warm rounded-2xl p-6 ">
         <h3
           className="text-xl font-bold mb-2"
           style={{ fontFamily: "Fredoka, sans-serif" }}
         >
           Adoption Fee
         </h3>
-        <p className="text-3xl font-bold">
-          $
-          {pet.category === "dog"
-            ? "250"
-            : pet.category === "cat"
-            ? "150"
-            : "100"}
-        </p>
+        <p className="text-3xl font-bold">Rs. {pet?.price}</p>
         <p className="text-sm opacity-90 mt-1">
           Includes vaccinations, microchip & health check
         </p>
@@ -71,21 +68,11 @@ const Details = ({ pet }: DetailsProps) => {
         <Button
           size="lg"
           className="flex-1 text-lg py-6"
-          // onClick={handleAdoptNow}
+          onClick={handleAdoptNow}
           // disabled={alreadyInCart}
         >
           {/* {alreadyInCart ? "In Cart" : "Adopt Now"} */}
           Adopt Now
-        </Button>
-        <Button
-          variant="outline"
-          size="lg"
-          className="flex-1 text-lg py-6"
-          // onClick={handleAddToCart}
-          // disabled={alreadyInCart}
-        >
-          {/* {alreadyInCart ? "Already Added" : "Add to Cart"} */}
-          Add to Cart
         </Button>
       </div>
     </div>

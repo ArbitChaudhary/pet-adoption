@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { PetCard } from "@/components/ui/cards/pet-card";
-import { pets } from "@/data/pets";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { IPet } from "../(pages)/pets/_common/pet-types";
 
-const Pets = () => {
-  const featuredPets = pets.slice(0, 4);
+interface PetsProps {
+  pets: IPet[] | [];
+}
+
+const Pets = ({ pets }: PetsProps) => {
+  const featuredPets = pets?.slice(0, 4) ?? [];
   return (
     <section className="py-16 md:py-24 bg-muted/30">
       <div className="container">
@@ -23,7 +27,7 @@ const Pets = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredPets.map((pet) => (
-            <PetCard key={pet.id} pet={pet} />
+            <PetCard key={pet._id} pet={pet} />
           ))}
         </div>
         <div className="text-center mt-10">

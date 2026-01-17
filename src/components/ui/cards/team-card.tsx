@@ -1,6 +1,6 @@
 "use client";
 import { ITeam } from "@/app/team/common/team-types";
-import { Linkedin, Mail, Twitter } from "lucide-react";
+// import { Linkedin, Mail, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,9 +15,11 @@ export function TeamCard({ member }: TeamCardProps) {
       className="group block bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-2"
     >
       <div className="relative aspect-square overflow-hidden">
+        {/* {member?.profileImage} */}
         <Image
-          src={member.profileImage as string}
+          src={member?.profileImage as string}
           alt={member.name}
+          fill
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -59,9 +61,10 @@ export function TeamCard({ member }: TeamCardProps) {
           {member.name}
         </h3>
         <p className="text-sm text-primary font-medium mt-1">{member.post}</p>
-        <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-          {member.description}
-        </p>
+        <p
+          dangerouslySetInnerHTML={{ __html: member?.description }}
+          className="text-sm text-muted-foreground mt-2 line-clamp-2"
+        />
       </div>
     </Link>
   );

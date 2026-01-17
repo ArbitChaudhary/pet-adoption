@@ -3,13 +3,18 @@ import About from "./about";
 import Features from "./features";
 import Hero from "./hero";
 import Pets from "./pets";
+import { IPet } from "../(pages)/pets/_common/pet-types";
 
-const SectionHome = () => {
+interface SectionHomeProps {
+  pets: IPet[];
+}
+
+const SectionHome = ({ pets }: SectionHomeProps) => {
   return (
     <div className="max-w-7xl mx-auto">
       <Hero />
       <Features />
-      <Pets />
+      <Pets pets={pets} />
       <About />
       <Newsletter />
     </div>

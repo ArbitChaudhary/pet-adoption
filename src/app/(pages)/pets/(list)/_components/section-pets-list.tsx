@@ -1,15 +1,16 @@
+import { IPet } from "../../_common/pet-types";
 import PetsGrid from "./pets-grid";
 import SearchSection from "./search";
 
 interface SectionPetsListProps {
-  pets: Array<any>;
+  pets: IPet[];
 }
 
-const SectionPetsList = () => {
+const SectionPetsList = ({ pets }: SectionPetsListProps) => {
   return (
     <>
       <SearchSection />
-      <PetsGrid />
+      <PetsGrid pets={pets} />
     </>
   );
 };

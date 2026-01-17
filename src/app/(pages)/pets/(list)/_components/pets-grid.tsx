@@ -2,11 +2,16 @@ import { Button } from "@/components/ui/button";
 import { PetCard } from "@/components/ui/cards/pet-card";
 import { pets } from "@/data/pets";
 import { Search, X } from "lucide-react";
+import { IPet } from "../../_common/pet-types";
 
-const PetsGrid = () => {
+interface PetsGridProps {
+  pets: IPet[];
+}
+
+const PetsGrid = ({ pets }: PetsGridProps) => {
   return (
     <section className="py-12 md:py-16">
-      <div className="container">
+      <div className="container mx-auto">
         {/* Results Info */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <p className="text-muted-foreground">
@@ -40,7 +45,7 @@ const PetsGrid = () => {
         {pets.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {pets.map((pet) => (
-              <PetCard key={pet.id} pet={pet} />
+              <PetCard key={pet._id} pet={pet} />
             ))}
           </div>
         ) : (

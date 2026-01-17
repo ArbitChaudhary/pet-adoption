@@ -2,17 +2,27 @@
 
 import Logo from "@/components/reusables/logo";
 import RegisterForm, { RegisterInput } from "./register-form";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/hooks/redux";
+import { registerUser } from "@/app/actions";
+import { setIsRegisterModalOpen } from "@/redux/reducers/global-slice";
 
 function SectionRegister() {
-  const onSubmit = (data: RegisterInput) => {
-    console.log(data);
+  const dispatch = useAppDispatch();
+  const onSubmit = async (data: RegisterInput) => {
+    try {
+      await registerUser(data);
+      dispatch(setIsRegisterModalOpen(false));
+    } catch (error) {
+      toast.error(error as string);
+    }
   };
   return (
     <div className="">
       <div className="flex justify-center items-center mt-4 mb-8">
         <Logo />
       </div>
-      <RegisterForm onSubmit={onSubmit} isLoading={false} />
+      <RegisterForm onSubmit={onSubmit} />
       <div className="text-center mt-2">
         <span>
           Already have an account?{" "}

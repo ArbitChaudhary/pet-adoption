@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Mail } from "lucide-react";
 import Image from "next/image";
@@ -42,10 +43,11 @@ const SectionTeamDetails = ({ team }: SectionTeamDetailsProps) => {
             {/* Profile Image & Social */}
             <div className="lg:col-span-1">
               <div className="sticky top-24">
-                <div className="rounded-2xl overflow-hidden shadow-card mb-6">
+                <div className="rounded-2xl overflow-hidden shadow-card mb-6 w-full min-h-[300px] max-h-[400px] md:h-full relative">
                   <Image
                     src={team?.profileImage as string}
                     alt={team.name}
+                    fill
                     className="w-full aspect-square object-cover"
                   />
                 </div>
@@ -98,7 +100,7 @@ const SectionTeamDetails = ({ team }: SectionTeamDetailsProps) => {
                 </p>
                 <p
                   dangerouslySetInnerHTML={{ __html: team?.description }}
-                  className="text-muted-foreground leading-relaxed"
+                  className="text-muted-foreground leading-relaxed max-w-full break-words"
                 />
               </div>
 

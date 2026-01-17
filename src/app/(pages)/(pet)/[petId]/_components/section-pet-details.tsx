@@ -7,14 +7,15 @@ import Details from "./details";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { IPet } from "@/app/(pages)/pets/_common/pet-types";
 
 interface SectionPetDetailsProps {
   petId: string;
+  pet: IPet;
 }
 
-const SectionPetDetails = ({ petId }: SectionPetDetailsProps) => {
+const SectionPetDetails = ({ petId, pet }: SectionPetDetailsProps) => {
   const router = useRouter();
-  const pet = pets.find((pet) => pet?.id === petId);
   return (
     <>
       <div className="container py-8 md:py-12">
@@ -27,11 +28,8 @@ const SectionPetDetails = ({ petId }: SectionPetDetailsProps) => {
           Back to Pets
         </Button>
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-          <ImageBox
-            imageUrl={pet?.image as StaticImageData}
-            category={pet?.category as string}
-          />
-          <Details pet={pet as Pet} />
+          <ImageBox imageUrl={pet?.image} category={pet?.category as string} />
+          <Details pet={pet as IPet} />
         </div>
       </div>
     </>

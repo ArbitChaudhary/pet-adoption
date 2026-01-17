@@ -13,7 +13,7 @@ const Hero = () => {
           alt="Happy pets"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-transparent" />
       </div>
       <div className="container relative z-10">
         <div className="max-w-xl">

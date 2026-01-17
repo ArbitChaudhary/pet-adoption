@@ -2,7 +2,7 @@ import { Badge, Heart } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 
 interface ImageBoxProps {
-  imageUrl: StaticImageData;
+  imageUrl: string;
   category: string;
 }
 
@@ -13,6 +13,7 @@ const ImageBox = ({ imageUrl, category }: ImageBoxProps) => {
         <Image
           src={imageUrl}
           alt={category}
+          fill
           className="w-full h-full object-cover"
         />
       </div>

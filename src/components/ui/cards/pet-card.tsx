@@ -1,12 +1,12 @@
-import { Pet } from "@/data/pets";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { IPet } from "@/app/(pages)/pets/_common/pet-types";
 
 interface PetCardProps {
-  pet: Pet;
+  pet: IPet;
 }
 
 const categoryColors = {
@@ -17,20 +17,22 @@ const categoryColors = {
 
 export function PetCard({ pet }: PetCardProps) {
   return (
-    <Link href={`/${pet.id}`}>
+    <Link href={`/${pet._id}`}>
       <div className="group bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1">
         <div className="relative aspect-square overflow-hidden">
           <Image
-            src={pet.image}
+            src={pet?.image}
             alt={pet.name}
+            fill
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
           <div className="absolute top-3 left-3">
             <Badge
               variant="secondary"
-              className={`${
-                categoryColors[pet.category]
-              } border font-medium capitalize`}
+              // className={`${
+              //   categoryColors[pet.category]
+              // } border font-medium capitalize`}
+              className="border font-medium capitalize"
             >
               {pet.category}
             </Badge>
@@ -56,9 +58,11 @@ export function PetCard({ pet }: PetCardProps) {
             <span>•</span>
             <span>{pet.gender}</span>
           </div>
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {pet.description}
-          </p>
+          <p
+            dangerouslySetInnerHTML={{ __html: pet?.description }}
+            className="text-sm text-muted-foreground line-clamp-2"
+          />
+
           <div className="flex items-center gap-2 pt-2">
             <Button variant="default" size="sm" className="flex-1">
               Adopt Me
