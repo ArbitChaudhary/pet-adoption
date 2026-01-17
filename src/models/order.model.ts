@@ -9,6 +9,7 @@ export interface IOrderItem {
   gender?: string;
   age?: number;
   dimension?: string;
+  image?: string;
 }
 
 export interface IOrder extends Document {
@@ -32,6 +33,7 @@ export const OrderItemSchema = new Schema(
     gender: { type: String },
     age: { type: Number },
     dimension: { type: String },
+    image: { type: String },
   },
   { _id: false }
 );
