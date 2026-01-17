@@ -24,6 +24,8 @@ const LazyEditTeamPage = React.lazy(() => import("@/pages/teams/edit/page"));
 //auth
 const LazyLoginPage = React.lazy(() => import("@/pages/auth/login/page"));
 
+// Orders
+const LazyOrdersListPage = React.lazy(() => import("@/pages/orders/list/page"));
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -47,6 +49,9 @@ const router = createBrowserRouter(
           <Route index element={<LazyTeamsListPage />} />
           <Route path="add" element={<LazyAddTeamPage />} />
           <Route path="edit/:teamId" element={<LazyEditTeamPage />} />
+        </Route>
+        <Route path="orders">
+          <Route index element={<LazyOrdersListPage />} />
         </Route>
       </Route>
     </>

@@ -38,6 +38,12 @@ export default function useSidebarMenu() {
           icon: PetsIcon,
         },
         {
+          label: "Orders",
+          href: "/orders",
+          type: "item",
+          icon: PetsIcon,
+        },
+        {
           label: "Teams",
           href: "/teams",
           type: "item",
