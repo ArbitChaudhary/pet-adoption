@@ -6,7 +6,7 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  role: "user" | "admin";
+  role: string;
   profilePicture?: string;
 }
 
@@ -15,7 +15,7 @@ export const userSchema = new mongoose.Schema<IUser>(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["user", "admin"], default: "user" },
+    role: { type: String, default: "user" },
     profilePicture: { type: String, default: null },
   },
   { timestamps: true }
