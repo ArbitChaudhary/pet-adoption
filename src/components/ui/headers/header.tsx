@@ -8,7 +8,7 @@ interface HeaderProps {
 function Header({ title, subtitle }: HeaderProps) {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", my: 2 }}>
-      <Typography variant="h5" sx={{ color: "text.primary" }}>
+      <Typography variant="h6" sx={{ color: "text.primary" }}>
         {title}
       </Typography>
       {subtitle && (

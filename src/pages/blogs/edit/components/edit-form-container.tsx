@@ -1,18 +1,15 @@
-import Header from "@/components/ui/headers/header";
-import { Box } from "@mui/material";
-import type { PetFormData } from "../../common/pets-types";
-import PetForm from "../../common/pet-form";
-import { useAddPetMutation } from "../../common/pets-api";
 import { uploadToCloudinary } from "@/config/cloudinary";
+import BlogForm from "../../common/blog-form";
+import type { BlogInput, IBlog } from "../../common/blog-types";
 import { useNavigate } from "react-router-dom";
+import { useUpdateBlogMutation } from "../../common/blog-api";
 
-function SectionAddPet() {
+const EditFormContainer = ({ data, id }: { data: IBlog; id: string }) => {
   const navigate = useNavigate();
-  const { isPending, mutateAsync } = useAddPetMutation();
-  const onSubmit = async (data: PetFormData) => {
+  const { isPending, mutateAsync } = useUpdateBlogMutation();
+  const onSubmit = async (data: BlogInput) => {
     try {
       const formData = new FormData();
-
       for (const [key, value] of Object.entries(data)) {
         if (Array.isArray(value)) {
           const urls: string[] = [];
@@ -34,29 +31,30 @@ function SectionAddPet() {
         } else if (value !== undefined && value !== null) {
           // Convert boolean values to strings
           if (typeof value === "boolean") {
-            formData.append(key, value.toString());
+            formData.append(key, value);
           } else {
             formData.append(key, value as string);
           }
         }
       }
-
-      await mutateAsync(formData as unknown as PetFormData);
-      navigate("/pets");
-    } catch (error) {
-      console.log("Error submitting new pet:", error);
+      await mutateAsync({ id, newData: formData as unknown as BlogInput });
+      navigate("/blogs");
+      //eslint-disable-next-line
+    } catch (error: any) {
+      console.log(
+        error?.data?.message || error?.message || "Error adding blog",
+      );
     }
   };
   return (
-    <Box>
-      <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
-        <Header title="Add a New Pet" />
-        <Box sx={{ mt: { xs: 1, md: 2 } }}>
-          <PetForm onSubmit={onSubmit} mode="add" isLoading={isPending} />
-        </Box>
-      </Box>
-    </Box>
+    <>
+      <BlogForm
+        onSubmit={onSubmit}
+        mode="edit"
+        initialData={data}
+        isLoading={isPending}
+      />
+    </>
   );
-}
-
-export default SectionAddPet;
+};
+export default EditFormContainer;

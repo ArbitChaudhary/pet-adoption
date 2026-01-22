@@ -1,19 +1,17 @@
-import Header from "@/components/ui/headers/header";
-import { Box } from "@mui/material";
-import type { PetFormData } from "../../common/pets-types";
-import PetForm from "../../common/pet-form";
-import { useAddPetMutation } from "../../common/pets-api";
-import { uploadToCloudinary } from "@/config/cloudinary";
 import { useNavigate } from "react-router-dom";
+import { useAddBlogMutation } from "../../common/blog-api";
+import BlogForm from "../../common/blog-form";
+import type { BlogInput } from "../../common/blog-types";
+import { uploadToCloudinary } from "@/config/cloudinary";
 
-function SectionAddPet() {
+const BlogFormContainer = () => {
+  const { mutateAsync, isPending } = useAddBlogMutation();
   const navigate = useNavigate();
-  const { isPending, mutateAsync } = useAddPetMutation();
-  const onSubmit = async (data: PetFormData) => {
+  const onSubmit = async (data: BlogInput) => {
     try {
       const formData = new FormData();
-
       for (const [key, value] of Object.entries(data)) {
+        console.log("key", key, "value", value);
         if (Array.isArray(value)) {
           const urls: string[] = [];
           for (const file of value) {
@@ -34,29 +32,26 @@ function SectionAddPet() {
         } else if (value !== undefined && value !== null) {
           // Convert boolean values to strings
           if (typeof value === "boolean") {
-            formData.append(key, value.toString());
+            formData.append(key, value);
           } else {
             formData.append(key, value as string);
+            console.log("object", value);
           }
         }
       }
-
-      await mutateAsync(formData as unknown as PetFormData);
-      navigate("/pets");
-    } catch (error) {
-      console.log("Error submitting new pet:", error);
+      await mutateAsync(formData as unknown as BlogInput);
+      navigate("/blogs");
+      //eslint-disable-next-line
+    } catch (error: any) {
+      console.log(
+        error?.data?.message || error?.message || "Error adding blog",
+      );
     }
   };
   return (
-    <Box>
-      <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
-        <Header title="Add a New Pet" />
-        <Box sx={{ mt: { xs: 1, md: 2 } }}>
-          <PetForm onSubmit={onSubmit} mode="add" isLoading={isPending} />
-        </Box>
-      </Box>
-    </Box>
+    <>
+      <BlogForm onSubmit={onSubmit} mode="add" isLoading={isPending} />
+    </>
   );
-}
-
-export default SectionAddPet;
+};
+export default BlogFormContainer;

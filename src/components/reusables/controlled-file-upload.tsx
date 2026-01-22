@@ -1,5 +1,5 @@
-import { Box, TextField, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
+import React, { useRef } from "react";
 import {
   type FieldValues,
   type Control,
@@ -11,6 +11,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import { useTheme } from "@mui/material/styles";
+import AddIcon from "@mui/icons-material/Add";
 
 type FileOrString = File | string;
 
@@ -34,14 +35,12 @@ const ControlledFileUpload = <T extends FieldValues>({
   multiple,
 }: ControlledFileUploadProps<T>) => {
   const fileRef = useRef<HTMLInputElement | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | string[]>("");
   const theme = useTheme();
   const handleClick = () => {
     if (fileRef.current) {
       fileRef.current.click();
     }
   };
-  const handleRemoveImage = () => {};
 
   return (
     <Controller
@@ -51,30 +50,34 @@ const ControlledFileUpload = <T extends FieldValues>({
         const files = Array.isArray(value)
           ? (value as FileOrString[])
           : value
-          ? ([value] as FileOrString[])
-          : ([] as FileOrString[]);
+            ? ([value] as FileOrString[])
+            : ([] as FileOrString[]);
 
         const handleFileChange = (
-          event: React.ChangeEvent<HTMLInputElement>
+          event: React.ChangeEvent<HTMLInputElement>,
         ) => {
           const files = event.target.files;
 
           if (files && files.length > 0) {
             if (!multiple) {
-              const url = URL.createObjectURL(files[0]);
-              setPreviewUrl(url);
               onChange(files?.[0]);
             }
             if (multiple) {
-              const urls: string[] = [];
-              for (let i = 0; i < files.length; i++) {
-                const url = URL.createObjectURL(files[i]);
-                urls.push(url);
-              }
-              setPreviewUrl(urls);
-              onChange(files ? Array.from(files) : []);
+              const existingFiles = Array.isArray(value) ? value : [];
+              onChange([...existingFiles, ...Array.from(files)]);
             }
           }
+          if (fileRef.current) {
+            fileRef.current.value = "";
+          }
+        };
+
+        // handle remove image with index
+        const handleRemoveImage = (index: number) => {
+          // files.filter((file) => file !== files[index]);\
+          files.splice(index, 1);
+          onChange(files);
+          console.log("files after removal", files);
         };
         return (
           <Box>
@@ -133,7 +136,10 @@ const ControlledFileUpload = <T extends FieldValues>({
               {files.length > 0 && (
                 <>
                   {files.map((file, index) => (
-                    <Box key={index}>
+                    <Box
+                      key={index}
+                      sx={{ position: "relative", width: "fit-content" }}
+                    >
                       {file instanceof File ? (
                         <img
                           src={URL.createObjectURL(file)}
@@ -144,11 +150,62 @@ const ControlledFileUpload = <T extends FieldValues>({
                         <img
                           src={file}
                           alt=""
-                          style={{ width: "100%", height: "100px" }}
+                          style={{ width: "100px", height: "100px" }}
                         />
                       )}
+                      <CloseIcon
+                        onClick={() => handleRemoveImage(index)}
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          right: 0,
+                          cursor: "pointer",
+                          zIndex: 2,
+                          borderRadius: "50%",
+                          backgroundColor: "white",
+                          color: theme.palette.error.main,
+                          fontSize: "20px",
+                          p: "2px",
+                        }}
+                      />
                     </Box>
                   ))}
+                  {multiple && files.length > 0 && (
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: 1,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          // position: "absolute",
+                          inset: 0,
+                          zIndex: 1,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <IconButton size="large" onClick={handleClick}>
+                          <AddIcon
+                            fontSize="large"
+                            sx={{ color: theme.palette.success.main }}
+                          />
+                        </IconButton>
+                        <Typography
+                          variant="caption"
+                          color={theme.palette.success.main}
+                        >
+                          Upload More
+                        </Typography>
+                      </Box>
+                    </Box>
+                  )}
                 </>
               )}
             </Box>

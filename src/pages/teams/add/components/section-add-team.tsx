@@ -4,8 +4,10 @@ import type { TeamInput } from "../../common/team-types";
 import Header from "@/components/ui/headers/header";
 import { useAddTeamMutation } from "../../common/team-api";
 import { uploadToCloudinary } from "@/config/cloudinary";
+import { useNavigate } from "react-router-dom";
 
 const SectionAddTeam = () => {
+  const navigate = useNavigate();
   const { mutateAsync, isPending } = useAddTeamMutation();
   const onSubmit = async (data: TeamInput) => {
     try {
@@ -20,6 +22,7 @@ const SectionAddTeam = () => {
       }
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
       await mutateAsync(formData as any);
+      navigate("/teams");
       // await mutateAsync(data);
     } catch (error) {
       console.log("Error adding team", error);

@@ -9,7 +9,7 @@ export const uploadToCloudinary = async (file: File) => {
         formData.append("upload_preset", "pets-bucket");
         return formData;
       })(),
-    }
+    },
   );
   const data = await response.json();
   return data.secure_url as string;

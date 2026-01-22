@@ -14,6 +14,7 @@ const SectionLogin = () => {
   const onSubmit = async (data: ILoginSchema) => {
     try {
       const res = await mutateAsync(data);
+      console.log(res);
       if (res.user.role !== "admin") {
         throw new Error("Unauthorized");
         return;

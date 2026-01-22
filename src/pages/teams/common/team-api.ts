@@ -5,16 +5,20 @@ import type { ITeam, TeamInput } from "./team-types";
 export const teamsQueryKeys = {
   all: ["teams"] as const,
   lists: () => [...teamsQueryKeys.all, "list"] as const,
-  list: (filter?: string) => [...teamsQueryKeys.lists(), { filter }] as const,
+  list: (filter?: {
+    filter: { search?: string; page?: number; limit?: number };
+  }) => [...teamsQueryKeys.lists(), { filter }] as const,
   details: () => [...teamsQueryKeys.all, "detail"] as const,
   detail: (id: string) => [...teamsQueryKeys.details(), id] as const,
 };
 
-export const useGetTeamsQuery = () => {
+export const useGetTeamsQuery = (filter: {
+  filter: { search?: string; page?: number; limit?: number };
+}) => {
   return useQuery({
-    queryKey: teamsQueryKeys.list(),
+    queryKey: teamsQueryKeys.list(filter),
     queryFn: async () => {
-      const result = await teamsApi.getTeams();
+      const result = await teamsApi.getTeams(filter);
       return result.data;
     },
   });
@@ -45,7 +49,7 @@ export const useAddTeamMutation = () => {
           (old: ITeam[] | undefined) => {
             if (!old) return [newTeam as ITeam];
             return [...old, newTeam as ITeam];
-          }
+          },
         );
       }
       return { previousTeams };
@@ -69,20 +73,24 @@ export const useDeleteTeamMutation = () => {
       const result = await teamsApi.deleteTeam(id);
       return result.data;
     },
-    onMutate: (id) => {
-      queryClient.cancelQueries({ queryKey: teamsQueryKeys.list() });
-      queryClient.cancelQueries({ queryKey: teamsQueryKeys.detail(id) });
-      const previousList = queryClient.getQueryData(teamsQueryKeys.list());
-      const previousTeam = queryClient.getQueryData(teamsQueryKeys.detail(id));
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: teamsQueryKeys.lists() });
+      await queryClient.cancelQueries({ queryKey: teamsQueryKeys.detail(id) });
+      const previousList = await queryClient.getQueryData(
+        teamsQueryKeys.lists(),
+      );
+      const previousTeam = await queryClient.getQueryData(
+        teamsQueryKeys.detail(id),
+      );
 
       queryClient.setQueriesData(
-        { queryKey: teamsQueryKeys.list() },
+        { queryKey: teamsQueryKeys.lists() },
         (old: { data: ITeam[] | undefined } | undefined) => {
           if (!old?.data) {
             return { data: [] };
           }
           return { data: old.data.filter((item) => item?._id !== id) };
-        }
+        },
       );
 
       queryClient.removeQueries({ queryKey: teamsQueryKeys.detail(id) });
@@ -91,19 +99,20 @@ export const useDeleteTeamMutation = () => {
     },
     onError: (err, id, context) => {
       console.log("Error adding team:", err, id);
-      queryClient.setQueryData(teamsQueryKeys.list(), context?.previousList);
+      queryClient.setQueryData(teamsQueryKeys.lists(), context?.previousList);
       queryClient.setQueryData(
         teamsQueryKeys.detail(id),
-        context?.previousTeam
+        context?.previousTeam,
       );
     },
     onSuccess: (_, error, id) => {
-      queryClient.invalidateQueries({ queryKey: teamsQueryKeys.list() });
-      if (!error) {
-        queryClient.invalidateQueries({
-          queryKey: teamsQueryKeys.detail(id.id),
-        });
-      }
+      queryClient.invalidateQueries({ queryKey: teamsQueryKeys.lists() });
+      console.log("Deleted team with id:", id);
+      // if (!error) {
+      queryClient.invalidateQueries({
+        queryKey: teamsQueryKeys.detail(id.id),
+      });
+      // }
     },
   });
 };
@@ -121,7 +130,7 @@ export const useUpdateTeamMutation = () => {
 
       const previousList = queryClient.getQueryData(teamsQueryKeys.list());
       const previousTeam = queryClient.getQueryData(
-        teamsQueryKeys.detail(data?.id)
+        teamsQueryKeys.detail(data?.id),
       );
 
       if (previousTeam) {
@@ -141,7 +150,7 @@ export const useUpdateTeamMutation = () => {
           return {
             data: [...old.data, data.updateData as ITeam],
           };
-        }
+        },
       );
       return { id: data.id, previousList, previousTeam };
     },
@@ -151,7 +160,7 @@ export const useUpdateTeamMutation = () => {
       queryClient.setQueryData(teamsQueryKeys.list(), context?.previousList);
       queryClient.setQueryData(
         teamsQueryKeys.detail(context?.id as string),
-        context?.previousTeam
+        context?.previousTeam,
       );
     },
     onSettled: (newTeam) => {

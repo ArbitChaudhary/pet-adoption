@@ -12,6 +12,11 @@ interface PetsTableProps {
   setSelectedPetId: Dispatch<SetStateAction<string>>;
   handleOpenDeleteDialog: () => void;
   handlePetEdit: (petId: string) => void;
+  paginationModel: { pageSize: number; page: number };
+  onPaginationModelChange: Dispatch<
+    SetStateAction<{ pageSize: number; page: number }>
+  >;
+  rowCount?: number;
 }
 
 const PetsTable = ({
@@ -19,6 +24,9 @@ const PetsTable = ({
   setSelectedPetId,
   handleOpenDeleteDialog,
   handlePetEdit,
+  paginationModel,
+  onPaginationModelChange,
+  rowCount,
 }: PetsTableProps) => {
   const columns: GridColDef<IPet>[] = [
     {
@@ -156,7 +164,20 @@ const PetsTable = ({
     },
   ];
   return (
-    <DataGrid rows={pets} getRowId={(row) => row?._id} columns={columns} />
+    <DataGrid
+      rows={pets}
+      getRowId={(row) => row?._id}
+      columns={columns}
+      rowCount={rowCount}
+      // initialState={{
+      //   // ...pets,
+      //   pagination: { paginationModel: { pageSize: 2 } },
+      // }}
+      pageSizeOptions={[5]}
+      paginationModel={paginationModel}
+      paginationMode="server"
+      onPaginationModelChange={onPaginationModelChange}
+    />
   );
 };
 

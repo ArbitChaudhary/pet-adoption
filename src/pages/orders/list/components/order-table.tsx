@@ -7,12 +7,25 @@ import type { IOrder } from "../../common/order-types";
 import { Box, IconButton, Typography } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
+import type { Dispatch, SetStateAction } from "react";
 
 interface OrderTableProps {
   orders: IOrder[];
+  rowCount?: number;
+  paginationModel?: { page: number; pageSize: number };
+  onPaginationModelChange?: Dispatch<
+    SetStateAction<{ page: number; pageSize: number }>
+  >;
+  handleOpenUpdateStatusModal: (id: string) => void;
 }
 
-const OrderTable = ({ orders }: OrderTableProps) => {
+const OrderTable = ({
+  orders,
+  rowCount,
+  paginationModel,
+  onPaginationModelChange,
+  handleOpenUpdateStatusModal,
+}: OrderTableProps) => {
   const columns: GridColDef<IOrder>[] = [
     {
       field: "_id",
@@ -25,7 +38,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
     {
       field: "userName",
       headerName: "Name",
-      width: 200,
+      width: 150,
       filterable: false,
       editable: false,
       sortable: false,
@@ -33,7 +46,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
     {
       field: "userEmail",
       headerName: "Email",
-      width: 200,
+      width: 150,
       filterable: false,
       editable: false,
       sortable: false,
@@ -41,7 +54,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
     {
       field: "userPhone",
       headerName: "Phone",
-      width: 150,
+      width: 120,
       filterable: false,
       editable: false,
       sortable: false,
@@ -49,7 +62,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
     {
       field: "totalAmount",
       headerName: "Total Amount",
-      width: 150,
+      width: 100,
       filterable: false,
       editable: false,
       sortable: false,
@@ -107,7 +120,10 @@ const OrderTable = ({ orders }: OrderTableProps) => {
           <IconButton size="medium">
             <VisibilityIcon fontSize="medium" />
           </IconButton>
-          <IconButton size="medium">
+          <IconButton
+            size="medium"
+            onClick={() => handleOpenUpdateStatusModal(params.row?._id)}
+          >
             <EditIcon fontSize="medium" />
           </IconButton>
         </Box>
@@ -115,7 +131,17 @@ const OrderTable = ({ orders }: OrderTableProps) => {
     },
   ];
   return (
-    <DataGrid rows={orders} columns={columns} getRowId={(row) => row?._id} />
+    <DataGrid
+      rows={orders}
+      columns={columns}
+      getRowId={(row) => row?._id}
+      rowCount={rowCount}
+      paginationModel={paginationModel}
+      paginationMode="server"
+      onPaginationModelChange={onPaginationModelChange}
+      pageSizeOptions={[10, 20, 40]}
+      sx={{ height: "fit-content" }}
+    />
   );
 };
 

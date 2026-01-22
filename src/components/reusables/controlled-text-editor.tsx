@@ -31,6 +31,34 @@ const ControlledTextEditor = <T extends FieldValues>({
   errors,
   disabled,
 }: ControlledTextEditorProps<T>) => {
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image"],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+  ];
   return (
     <Controller
       control={control}
@@ -46,6 +74,8 @@ const ControlledTextEditor = <T extends FieldValues>({
               // Convert "empty" Quill content to empty string
               field.onChange(isQuillEmpty(content) ? "" : content);
             }}
+            modules={modules}
+            formats={formats}
           />
           {errors && errors[name] && (
             <Typography variant="body2" sx={{ color: "error.main" }}>

@@ -13,6 +13,11 @@ interface TeamsTableProps {
   selectedTeamId: string;
   setSelectedTeamId: Dispatch<SetStateAction<string>>;
   handleEdit: (id: string) => void;
+  paginationModel: { page: number; pageSize: number };
+  onPaginationModelChange: Dispatch<
+    SetStateAction<{ page: number; pageSize: number }>
+  >;
+  rowCount: number;
 }
 
 export default function TeamsTable({
@@ -20,6 +25,9 @@ export default function TeamsTable({
   handleDeleteModalOpen,
   setSelectedTeamId,
   handleEdit,
+  paginationModel,
+  onPaginationModelChange,
+  rowCount,
 }: TeamsTableProps) {
   const columns: GridColDef<ITeam>[] = [
     {
@@ -130,7 +138,12 @@ export default function TeamsTable({
       rows={teams}
       getRowId={(row) => row._id}
       columns={columns}
+      rowCount={rowCount}
       disableRowSelectionOnClick
+      paginationModel={paginationModel}
+      onPaginationModelChange={onPaginationModelChange}
+      paginationMode="server"
+      pageSizeOptions={[2]}
     />
   );
 }

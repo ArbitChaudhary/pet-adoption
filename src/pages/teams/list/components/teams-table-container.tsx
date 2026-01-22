@@ -5,15 +5,30 @@ import { useMemo, useState } from "react";
 import type { ITeam } from "../../common/team-types";
 import DeleteModal from "@/components/modal/delete-modal";
 import { useNavigate } from "react-router-dom";
+import SearchBox from "@/components/reusables/search-box";
+import { Box } from "@mui/material";
 
 function TeamsTableContainer() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [selectedTeamId, setSelectedTeamId] = useState<string>("");
-
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [paginationModel, setPaginationModel] = useState<{
+    page: number;
+    pageSize: number;
+  }>({
+    page: 0,
+    pageSize: 20,
+  });
+  const filter = {
+    search: searchQuery,
+    page: paginationModel.page,
+    limit: paginationModel.pageSize,
+  };
   const navigate = useNavigate();
-  const { data: teams, isLoading } = useGetTeamsQuery();
+  const { data, isLoading } = useGetTeamsQuery({ filter });
   const { isPending: isDeleting, mutateAsync } = useDeleteTeamMutation();
-  const memoizedTeams = useMemo(() => (teams?.teams as ITeam[]) || [], [teams]);
+  const memoizedTeams = useMemo(() => (data?.teams as ITeam[]) || [], [data]);
+  const memoizedRow = useMemo(() => data?.total, [data]);
 
   const handleDeleteModalOpen = () => {
     setIsDeleteModalOpen(true);
@@ -40,19 +55,26 @@ function TeamsTableContainer() {
   }
   return (
     <>
+      <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Box sx={{ mt: 2 }} />
       <TeamsTable
         teams={memoizedTeams as ITeam[]}
         handleDeleteModalOpen={handleDeleteModalOpen}
         selectedTeamId={selectedTeamId}
         setSelectedTeamId={setSelectedTeamId}
         handleEdit={handleEdit}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        rowCount={memoizedRow as number}
       />
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        onClose={handleDeleteModalClose}
-        handleDelete={handleDelete}
-        isLoading={isDeleting}
-      />
+      {isDeleteModalOpen && (
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleDeleteModalClose}
+          handleDelete={handleDelete}
+          isLoading={isDeleting}
+        />
+      )}
     </>
   );
 }

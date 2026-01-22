@@ -2,8 +2,12 @@ import type { TeamInput } from "@/pages/teams/common/team-types";
 import { api } from "../axios";
 
 export default {
-  getTeams() {
-    return api.get("/teams");
+  getTeams({
+    filter,
+  }: {
+    filter: { search?: string; page?: number; limit?: number };
+  }) {
+    return api.get(`/teams`, { params: filter });
   },
   getTeamById(id: string) {
     return api.get(`/teams/${id}`);

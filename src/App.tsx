@@ -26,6 +26,11 @@ const LazyLoginPage = React.lazy(() => import("@/pages/auth/login/page"));
 
 // Orders
 const LazyOrdersListPage = React.lazy(() => import("@/pages/orders/list/page"));
+
+// Blogs
+const LazyBlogsListPage = React.lazy(() => import("@/pages/blogs/list/page"));
+const LazyAddBlogPage = React.lazy(() => import("@/pages/blogs/add/page"));
+const LazyEditBlogPage = React.lazy(() => import("@/pages/blogs/edit/page"));
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -33,9 +38,9 @@ const router = createBrowserRouter(
       <Route
         path="/"
         element={
-          // <ProtectedRoute>
-          <DashboardLayout />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
         }
       >
         <Route index element={<LazyHomePage />} />
@@ -53,9 +58,14 @@ const router = createBrowserRouter(
         <Route path="orders">
           <Route index element={<LazyOrdersListPage />} />
         </Route>
+        <Route path="blogs">
+          <Route index element={<LazyBlogsListPage />} />
+          <Route path="add" element={<LazyAddBlogPage />} />
+          <Route path="edit/:blogId" element={<LazyEditBlogPage />} />
+        </Route>
       </Route>
-    </>
-  )
+    </>,
+  ),
 );
 
 const App = () => {

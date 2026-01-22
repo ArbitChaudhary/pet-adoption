@@ -2,19 +2,26 @@ import petApi from "@/axios/api-actions/petApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { IPet, PetFormData } from "./pets-types";
 
+export type IFilter = {
+  search?: string;
+  page?: string;
+  limit?: string;
+};
+
 export const petsQueryKeys = {
   all: ["pets"] as const,
   lists: () => [...petsQueryKeys.all, "list"] as const,
-  list: (filter?: string) => [...petsQueryKeys.lists(), filter] as const,
+  list: (filter?: IFilter) => [...petsQueryKeys.lists(), { filter }] as const,
   details: () => [...petsQueryKeys.all, "detail"] as const,
   detail: (id: string) => [...petsQueryKeys.details(), id] as const,
 };
 
-export const useGetPetsQuery = () => {
+export const useGetPetsQuery = (filter: IFilter) => {
   return useQuery({
-    queryKey: petsQueryKeys.list(),
+    queryKey: petsQueryKeys.list(filter),
     queryFn: async () => {
-      const result = await petApi.getPets();
+      const result = await petApi.getPets(filter);
+      console.log(result);
       return result.data;
     },
     staleTime: Infinity,
@@ -40,16 +47,16 @@ export const useAddPetMutation = () => {
       return result.data;
     },
     onMutate: (newPet) => {
-      queryClient.cancelQueries({ queryKey: petsQueryKeys.list() });
+      queryClient.cancelQueries({ queryKey: petsQueryKeys.lists() });
 
-      const previousList = queryClient.getQueryData(petsQueryKeys.list());
+      const previousList = queryClient.getQueryData(petsQueryKeys.lists());
       if (previousList) {
         queryClient.setQueriesData(
-          { queryKey: petsQueryKeys.list() },
+          { queryKey: petsQueryKeys.lists() },
           (old: IPet[] | undefined) => {
             if (!old) return [newPet as IPet];
             return [...old, newPet as IPet];
-          }
+          },
         );
       }
       return { previousList };
@@ -57,11 +64,11 @@ export const useAddPetMutation = () => {
     onError: (error, newPet, context) => {
       console.log("Error adding pet", error, newPet);
       if (context?.previousList) {
-        queryClient.setQueryData(petsQueryKeys.list(), context.previousList);
+        queryClient.setQueryData(petsQueryKeys.lists(), context.previousList);
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: petsQueryKeys.list() });
+      queryClient.invalidateQueries({ queryKey: petsQueryKeys.lists() });
     },
   });
 };
@@ -81,7 +88,7 @@ export const useUpdatePetMutation = () => {
 
       const previousList = queryClient.getQueryData(petsQueryKeys.list());
       const previousPet = queryClient.getQueryData(
-        petsQueryKeys.detail(data?.id)
+        petsQueryKeys.detail(data?.id),
       );
 
       if (previousPet) {
@@ -99,9 +106,9 @@ export const useUpdatePetMutation = () => {
             return [data.newData as IPet];
           }
           return old.map((pet) =>
-            pet?._id === data?.id ? { ...pet, ...data.newData } : pet
+            pet?._id === data?.id ? { ...pet, ...data.newData } : pet,
           );
-        }
+        },
       );
       return { newData: data.newData, previousList, previousPet };
     },
@@ -110,7 +117,7 @@ export const useUpdatePetMutation = () => {
       queryClient.setQueryData(petsQueryKeys.list(), context?.previousList);
       queryClient.setQueryData(
         petsQueryKeys.detail(data?.id as string),
-        context?.previousPet
+        context?.previousPet,
       );
     },
     onSuccess: (newPet) => {
@@ -132,19 +139,19 @@ export const useDeletePetMutation = () => {
       return result.data;
     },
     onMutate: (id) => {
-      queryClient.cancelQueries({ queryKey: petsQueryKeys.list() });
+      queryClient.cancelQueries({ queryKey: petsQueryKeys.lists() });
       queryClient.cancelQueries({ queryKey: petsQueryKeys.detail(id) });
 
-      const previousList = queryClient.getQueryData(petsQueryKeys.list());
+      const previousList = queryClient.getQueryData(petsQueryKeys.lists());
       const previousPet = queryClient.getQueryData(petsQueryKeys.detail(id));
 
       if (previousList) {
         queryClient.setQueriesData(
-          { queryKey: petsQueryKeys.list() },
+          { queryKey: petsQueryKeys.lists() },
           (old: { data: IPet[] | undefined } | undefined) => {
             if (!old?.data) return { data: [] };
             return { data: old.data.filter((pet) => pet?._id !== id) };
-          }
+          },
         );
       }
       queryClient.removeQueries({ queryKey: petsQueryKeys.detail(id) });
@@ -152,11 +159,11 @@ export const useDeletePetMutation = () => {
     },
     onError: (err, id, context) => {
       console.log("Error deleting pet:", err, id);
-      queryClient.setQueryData(petsQueryKeys.list(), context?.previousList);
+      queryClient.setQueryData(petsQueryKeys.lists(), context?.previousList);
       queryClient.setQueryData(petsQueryKeys.detail(id), context?.previousPet);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: petsQueryKeys.list() });
+      queryClient.invalidateQueries({ queryKey: petsQueryKeys.lists() });
     },
   });
 };

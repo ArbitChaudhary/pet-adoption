@@ -10,7 +10,7 @@ import LoadingButtom from "../ui/buttons/loading-button";
 interface DeleteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  handleDelete: () => void;
+  handleDelete?: () => void;
   isLoading?: boolean;
 }
 
