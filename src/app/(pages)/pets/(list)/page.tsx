@@ -11,13 +11,13 @@ async function PetsPage({
     `${process.env.API_BASE_URL}/pets?search=${search || ""}`,
     {
       cache: "no-store",
-    }
+    },
   );
   const data = await pets.json();
 
   return (
     <>
-      <SectionPetsList pets={data as IPet[]} />
+      <SectionPetsList pets={data.pets as IPet[]} />
     </>
   );
 }

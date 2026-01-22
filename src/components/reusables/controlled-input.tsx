@@ -6,6 +6,7 @@ import {
   type PathValue,
   type FieldErrors,
   Controller,
+  RegisterOptions,
 } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -53,6 +54,7 @@ const ControlledInput = <T extends FieldValues>({
     <Controller
       control={control}
       name={name}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <div className="relative">
           {label && <Label htmlFor={name}>{label}</Label>}
@@ -62,7 +64,6 @@ const ControlledInput = <T extends FieldValues>({
               type={isPassword ? toggleType : type}
               disabled={disabled}
               placeholder={placeholder}
-              defaultValue={defaultValue}
               className={`w-full mt-1.5 ${isPassword ? "pr-3" : ""}`}
             />
             {isPassword && !showPassword && (

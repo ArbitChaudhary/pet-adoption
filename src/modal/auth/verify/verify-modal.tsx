@@ -6,17 +6,39 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { setIsUserVerifyModalOpen } from "@/redux/reducers/global-slice";
+import {
+  setIsUserVerifyModalOpen,
+  setUser,
+} from "@/redux/reducers/global-slice";
 import z from "zod";
 import VerifyForm, { verifySchema } from "./verify-form";
 import ButtonLoading from "@/components/ui/buttons/loading-button";
+import { useVerifyEmailMutation } from "@/redux/actions/auth-slice";
+import { toast } from "sonner";
 
 const UserVerifyModal = () => {
-  const { isUserVerifyModalOpen } = useAppSelector((state) => state.global);
+  const { isUserVerifyModalOpen, email } = useAppSelector(
+    (state) => state.global,
+  );
   const dispatch = useAppDispatch();
 
+  const [verifyEmail, { isLoading }] = useVerifyEmailMutation();
   const onSubmit = async (code: z.infer<typeof verifySchema>) => {
-    console.log("Code", code);
+    try {
+      const res = await verifyEmail({
+        email,
+        verificationCode: code.code,
+      }).unwrap();
+      console.log("Verification Response:", res);
+      dispatch(setUser(res.user));
+      toast.success("Welcome!");
+      dispatch(setIsUserVerifyModalOpen(false));
+      // eslint-disable-next-line
+    } catch (error: any) {
+      toast.error(
+        error?.data?.message || error?.message || "Verification failed",
+      );
+    }
   };
 
   return (
@@ -33,12 +55,13 @@ const UserVerifyModal = () => {
             Please enter the verification code sent to you email
           </span>
         </DialogTitle>
-        <VerifyForm onSubmit={onSubmit} isLoading={false} />
+        <VerifyForm onSubmit={onSubmit} isLoading={isLoading} />
         <DialogFooter className="flex flex-col gap-0 justify-center">
           <ButtonLoading
             buttonText="Re-send code"
             type="button"
             className="w-full"
+            isLoading={isLoading}
           />
         </DialogFooter>
       </DialogContent>

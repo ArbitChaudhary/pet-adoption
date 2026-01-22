@@ -8,13 +8,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { setIsLoginModalOpen } from "@/redux/reducers/global-slice";
+import { setIsLoginModalOpen, setUser } from "@/redux/reducers/global-slice";
 import { CircleUser, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 
 const AuthorizedNavbar = () => {
   const { user } = useAppSelector((state) => state.global);
   const dispatch = useAppDispatch();
+  const handleLogOut = () => {
+    localStorage.removeItem("access_token");
+    dispatch(setUser(null));
+    window.location.reload();
+  };
   if (!user) {
     return (
       <CustomButton
@@ -43,7 +48,7 @@ const AuthorizedNavbar = () => {
           <DropdownMenuItem>
             <Settings /> Settings
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogOut}>
             <LogOut /> Logout
           </DropdownMenuItem>
         </DropdownMenuContent>

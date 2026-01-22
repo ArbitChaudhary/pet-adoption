@@ -3,7 +3,6 @@ import ControlledInput from "@/components/reusables/controlled-input";
 import ControlledPhoneInput from "@/components/reusables/controlled-phone-input";
 import ButtonLoading from "@/components/ui/buttons/loading-button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -39,7 +38,6 @@ function RegisterForm({ onSubmit, isLoading }: RegisterFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(registerSchema) });
-  const { pending } = useFormStatus();
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-3">
@@ -78,7 +76,7 @@ function RegisterForm({ onSubmit, isLoading }: RegisterFormProps) {
           type="password"
           isPassword={true}
         />
-        <ButtonLoading type="submit" isLoading={pending} />
+        <ButtonLoading type="submit" isLoading={isLoading} />
       </div>
     </form>
   );

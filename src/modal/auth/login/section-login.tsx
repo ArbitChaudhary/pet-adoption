@@ -8,6 +8,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import {
   setIsLoginModalOpen,
   setIsRegisterModalOpen,
+  setIsUserVerifyModalOpen,
   setUser,
 } from "@/redux/reducers/global-slice";
 
@@ -23,7 +24,15 @@ function SectionLogin() {
       }
       dispatch(setUser(response.user));
       dispatch(setIsLoginModalOpen(false));
-    } catch (error) {
+      // eslint-disable-next-line
+    } catch (error: any) {
+      if (
+        error?.data?.message === "Please verify your email" ||
+        error?.message === "Please verify your email"
+      ) {
+        dispatch(setIsLoginModalOpen(false));
+        dispatch(setIsUserVerifyModalOpen(true));
+      }
       console.log("Login Error:", error);
       toast.error(error?.data?.message as string);
     }

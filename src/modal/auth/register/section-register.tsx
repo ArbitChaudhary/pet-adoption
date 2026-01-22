@@ -4,17 +4,27 @@ import Logo from "@/components/reusables/logo";
 import RegisterForm, { RegisterInput } from "./register-form";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/hooks/redux";
-import { registerUser } from "@/app/actions";
-import { setIsRegisterModalOpen } from "@/redux/reducers/global-slice";
+import {
+  setEmail,
+  setIsRegisterModalOpen,
+  setIsUserVerifyModalOpen,
+} from "@/redux/reducers/global-slice";
+import { useRegisterUserMutation } from "@/redux/actions/auth-slice";
 
 function SectionRegister() {
   const dispatch = useAppDispatch();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
   const onSubmit = async (data: RegisterInput) => {
     try {
-      await registerUser(data);
+      await registerUser(data).unwrap();
+      dispatch(setEmail(data.email));
       dispatch(setIsRegisterModalOpen(false));
-    } catch (error) {
-      toast.error(error as string);
+      dispatch(setIsUserVerifyModalOpen(true));
+      // eslint-disable-next-line
+    } catch (error: any) {
+      toast.error(
+        error?.data?.message || error?.message || "Registration failed",
+      );
     }
   };
   return (
@@ -22,7 +32,7 @@ function SectionRegister() {
       <div className="flex justify-center items-center mt-4 mb-8">
         <Logo />
       </div>
-      <RegisterForm onSubmit={onSubmit} />
+      <RegisterForm onSubmit={onSubmit} isLoading={isLoading} />
       <div className="text-center mt-2">
         <span>
           Already have an account?{" "}

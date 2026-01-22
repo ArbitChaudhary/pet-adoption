@@ -10,6 +10,7 @@ import LoginModal from "@/modal/auth/login/login-modal";
 import UserVerifyModal from "@/modal/auth/verify/verify-modal";
 import AuthorizedNavbar from "./authorized";
 import NavCart from "./nav-cart";
+import ForgotPasswordModal from "@/modal/auth/forgot-password/forgot-password-modal";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -22,8 +23,12 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isRegisterModalOpen, isLoginModalOpen, isUserVerifyModalOpen } =
-    useAppSelector((state) => state.global);
+  const {
+    isRegisterModalOpen,
+    isLoginModalOpen,
+    isUserVerifyModalOpen,
+    isForgotPasswordModalOpen,
+  } = useAppSelector((state) => state.global);
 
   return (
     <>
@@ -114,6 +119,7 @@ export function Navbar() {
       {isRegisterModalOpen && <RegisterModal />}
       {isLoginModalOpen && <LoginModal />}
       {isUserVerifyModalOpen && <UserVerifyModal />}
+      {isForgotPasswordModalOpen && <ForgotPasswordModal />}
     </>
   );
 }

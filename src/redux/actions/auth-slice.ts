@@ -27,7 +27,26 @@ const authSlice = api.injectEndpoints({
         body: loginData,
       }),
     }),
+    sendVerificationCode: build.mutation({
+      query: (email: { email: string }) => ({
+        url: "/users/send-verification-code",
+        method: "POST",
+        body: email,
+      }),
+    }),
+    verifyEmail: build.mutation({
+      query: (data: { email: string; verificationCode: string }) => ({
+        url: "users/verify-email",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation } = authSlice;
+export const {
+  useRegisterUserMutation,
+  useLoginUserMutation,
+  useSendVerificationCodeMutation,
+  useVerifyEmailMutation,
+} = authSlice;

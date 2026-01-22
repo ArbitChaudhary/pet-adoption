@@ -8,6 +8,7 @@ interface GlobalState {
   isResetPasswordModalOpen: boolean;
   isUserVerifyModalOpen: boolean;
   user: IUser | null;
+  email: string;
 }
 
 const initialState: GlobalState = {
@@ -17,6 +18,7 @@ const initialState: GlobalState = {
   isResetPasswordModalOpen: false,
   isUserVerifyModalOpen: false,
   user: null,
+  email: "",
 };
 export const globalSlice = createSlice({
   name: "global",
@@ -40,6 +42,9 @@ export const globalSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser | null>) => {
       state.user = action.payload;
     },
+    setEmail: (state, action: PayloadAction<string>) => {
+      state.email = action.payload;
+    },
   },
 });
 
@@ -50,6 +55,7 @@ export const {
   setIsResetPasswordModalOpen,
   setIsUserVerifyModalOpen,
   setUser,
+  setEmail,
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

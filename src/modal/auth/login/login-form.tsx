@@ -1,6 +1,11 @@
 "use client";
 import ControlledInput from "@/components/reusables/controlled-input";
 import ButtonLoading from "@/components/ui/buttons/loading-button";
+import { useAppDispatch } from "@/hooks/redux";
+import {
+  setIsForgotPasswordModalOpen,
+  setIsLoginModalOpen,
+} from "@/redux/reducers/global-slice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -25,6 +30,12 @@ function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(loginSchema) });
+  const dispatch = useAppDispatch();
+
+  const handleForgotPassword = () => {
+    dispatch(setIsLoginModalOpen(false));
+    dispatch(setIsForgotPasswordModalOpen(true));
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-3">
@@ -44,6 +55,14 @@ function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
           type="password"
           isPassword={true}
         />
+        <div className="flex justify-end ">
+          <span
+            className="block text-right cursor-pointer text-muted-foreground text-sm"
+            onClick={handleForgotPassword}
+          >
+            Forgot Password?
+          </span>
+        </div>
 
         <ButtonLoading type="submit" isLoading={isLoading} />
       </div>
