@@ -18,7 +18,7 @@ interface DecodedToken extends JwtPayload {
 export const authenticate = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const header = req.headers.authorization;
   const token = header?.split(" ")[1];
@@ -38,17 +38,15 @@ export const authenticate = (
 export const verifyAdmin = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  const header = req.headers.authorization;
+  const header = req.headers["authorization"];
   const token = header?.split(" ")[1];
-  console.log("Received Token for Admin Verification:", token);
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized" });
   }
   jwt.verify(token, process.env.JWT_SECRET as string, (error, decoded) => {
-    console.log("Decoded Token:", decoded);
     if (error) {
       return res.status(403).json({ message: "Forbidden" });
     }

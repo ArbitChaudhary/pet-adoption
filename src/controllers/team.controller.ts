@@ -3,7 +3,7 @@ import { Team } from "../models/team.model.ts";
 
 export const getTeams = async (req: Request, res: Response) => {
   try {
-    const { search = "", page = 1, limit = 20 } = req.query;
+    const { search = "", page = 0, limit = 20 } = req.query;
     const pageNumber = Number(page);
     const limitNumber = Number(limit);
 
@@ -11,11 +11,12 @@ export const getTeams = async (req: Request, res: Response) => {
       $or: [
         { name: { $regex: search as string, $options: "i" } },
         { email: { $regex: search as string, $options: "i" } },
+        { phoneNumber: { $regex: search as string, $options: "i" } },
       ],
     };
     const total = await Team.countDocuments(query);
     const teams = await Team.find(query)
-      .skip((pageNumber - 1) * limitNumber)
+      .skip(pageNumber * limitNumber)
       .limit(limitNumber);
     res.status(200).json({
       total: total,

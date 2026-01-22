@@ -16,7 +16,7 @@ export const blogSchema = new Schema<IBlog>(
     author: { type: String },
     photo: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Blog = mongoose.model<IBlog>("Blog", blogSchema);

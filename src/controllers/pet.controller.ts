@@ -3,9 +3,9 @@ import { Pet } from "../models/pet.model.ts";
 
 export const getAllPets = async (req: Request, res: Response) => {
   try {
-    const { search = "" } = req.query;
-    // const pageNumber = Number(page);
-    // const limitNumber = Number(limit);
+    const { search = "", page = 0, limit = 20 } = req.query;
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
 
     const query = {
       $or: [
@@ -15,8 +15,16 @@ export const getAllPets = async (req: Request, res: Response) => {
         { category: { $regex: search as string, $options: "i" } },
       ],
     };
-    const pets = await Pet.find(query);
-    return res.status(200).json(pets);
+    const total = await Pet.countDocuments(query);
+    const pets = await Pet.find(query)
+      .skip(pageNumber * limitNumber)
+      .limit(limitNumber);
+    return res.status(200).json({
+      total,
+      page: pageNumber,
+      totalPages: Math.ceil(total / limitNumber),
+      pets,
+    });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error", error });
   }
