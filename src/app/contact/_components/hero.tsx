@@ -1,7 +1,7 @@
 const Hero = () => {
   return (
     <section className="py-12 md:py-20 gradient-hero">
-      <div className="container text-center">
+      <div className="container text-center mx-auto">
         <h1
           className="text-4xl md:text-5xl font-bold text-foreground mb-4"
           style={{ fontFamily: "Fredoka, sans-serif" }}

@@ -1,9 +1,14 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { IPet } from "@/app/(pages)/pets/_common/pet-types";
+import { IPet } from "@/app/pets/(pets)/_common/pet-types";
+import { useAddWishlistItemMutation } from "@/redux/actions/wishlist-slice";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { setIsLoginModalOpen } from "@/redux/reducers/global-slice";
+import { toast } from "sonner";
 
 interface PetCardProps {
   pet: IPet;
@@ -16,8 +21,26 @@ const categoryColors = {
 };
 
 export function PetCard({ pet }: PetCardProps) {
+  const { user } = useAppSelector((state) => state.global);
+  const [addWishlistItem, { isLoading }] = useAddWishlistItemMutation();
+  const dispatch = useAppDispatch();
+
+  const handleAddToWishlist = async () => {
+    if (!user) {
+      dispatch(setIsLoginModalOpen(true));
+      return;
+    }
+    try {
+      await addWishlistItem({ petId: pet._id, userId: user?._id }).unwrap;
+      //eslint-disable-next-line
+    } catch (error: any) {
+      toast.error(
+        error?.data?.message || error?.message || "Failed to add wishlist",
+      );
+    }
+  };
   return (
-    <Link href={`/${pet._id}`}>
+    <Link href={`/pets/${pet._id}`}>
       <div className="group bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1">
         <div className="relative aspect-square overflow-hidden">
           <Image
@@ -38,7 +61,7 @@ export function PetCard({ pet }: PetCardProps) {
             </Badge>
           </div>
           <button className="absolute top-3 right-3 h-10 w-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-primary hover:text-primary-foreground">
-            <Heart className="h-5 w-5" />
+            <Heart className="h-5 w-5" onClick={handleAddToWishlist} />
           </button>
         </div>
         <div className="p-5 space-y-3">

@@ -1,9 +1,14 @@
+"use client";
+import parse from "html-react-parser";
+
 interface DescriptionProps {
   description: string;
   name?: string;
 }
 
 const Description = ({ description, name }: DescriptionProps) => {
+  const parsedDescription = description.replace(/&nbsp;/g, " ");
+
   return (
     <div className="bg-card rounded-2xl p-6 shadow-soft border border-border/50">
       <h2
@@ -12,10 +17,13 @@ const Description = ({ description, name }: DescriptionProps) => {
       >
         About {name}
       </h2>
-      <p
-        dangerouslySetInnerHTML={{ __html: description }}
-        className="text-muted-foreground leading-relaxed wrap-break-word w-full"
+      <div
+        dangerouslySetInnerHTML={{ __html: parsedDescription }}
+        className="text-muted-foreground whitespace-normal break-words"
       />
+      {/* <div className="text-muted-foreground prose prose-sm max-w-none min-w-0 whitespace-pre-line break-words">
+        {parse(description)}
+      </div> */}
 
       <p className="text-muted-foreground leading-relaxed mt-4">
         {name} is looking for a loving forever home. Our adoption process

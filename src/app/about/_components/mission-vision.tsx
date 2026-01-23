@@ -3,7 +3,7 @@ import { Heart, Target } from "lucide-react";
 const MissionVision = () => {
   return (
     <section className="py-16 md:py-24 bg-muted/30">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="p-8 rounded-2xl bg-card shadow-soft">
             <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl gradient-warm mb-6">

@@ -10,7 +10,7 @@ interface TeamGridProps {
 const TeamGrid = ({ teams }: TeamGridProps) => {
   console.log("Teams in TeamGrid:", teams);
   return (
-    <section className="py-12 md:py-16">
+    <section className="container  mx-auto py-12 md:py-16">
       <div className="container">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {teams.map((team) => (

@@ -1,7 +1,7 @@
 const Story = () => {
   return (
     <section className="py-16 md:py-24">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2

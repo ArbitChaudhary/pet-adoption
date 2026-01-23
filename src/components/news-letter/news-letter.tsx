@@ -18,7 +18,7 @@ export function Newsletter() {
       //     description: "You'll receive updates about our adorable pets.",
       //   });
       toast.success(
-        "Thanks for subscribing! 🎉 You'll receive updates about our adorable pets."
+        "Thanks for subscribing! 🎉 You'll receive updates about our adorable pets.",
       );
       setEmail("");
     }
@@ -26,7 +26,7 @@ export function Newsletter() {
 
   return (
     <section className="py-16 md:py-24 bg-muted/50">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="max-w-2xl mx-auto text-center">
           <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl gradient-warm mb-6 animate-bounce-gentle">
             <Mail className="h-7 w-7 text-primary-foreground" />

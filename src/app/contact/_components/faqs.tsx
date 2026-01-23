@@ -1,7 +1,7 @@
 const FAQs = () => {
   return (
     <section className="py-16 md:py-24 bg-muted/30">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="max-w-3xl mx-auto">
           <h2
             className="text-3xl font-bold text-foreground mb-8 text-center"

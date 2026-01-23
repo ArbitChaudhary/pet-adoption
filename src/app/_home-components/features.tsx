@@ -3,7 +3,7 @@ import { Home, Shield, Users } from "lucide-react";
 const Features = () => {
   return (
     <section className="py-16 md:py-24">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center p-8 rounded-2xl bg-card shadow-soft hover:shadow-card transition-all duration-300 group">
             <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl gradient-warm mb-5 group-hover:scale-110 transition-transform">

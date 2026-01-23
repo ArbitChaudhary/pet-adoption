@@ -17,7 +17,7 @@ const SectionTeamDetails = ({ team }: SectionTeamDetailsProps) => {
 
   if (!team) {
     return (
-      <div className="container py-20 text-center">
+      <div className="container py-20 text-center mx-auto">
         <h1 className="text-2xl font-bold text-foreground mb-4">
           Team member not found
         </h1>
@@ -30,8 +30,8 @@ const SectionTeamDetails = ({ team }: SectionTeamDetailsProps) => {
 
   return (
     <Suspense fallback={<PageLoader />}>
-      <section className="py-12 md:py-20">
-        <div className="container">
+      <section className="py-12 px-4 md:px-2 md:py-20">
+        <div className="container mx-auto">
           <Button variant="ghost" asChild className="mb-8">
             <Link href="/team">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -43,12 +43,12 @@ const SectionTeamDetails = ({ team }: SectionTeamDetailsProps) => {
             {/* Profile Image & Social */}
             <div className="lg:col-span-1">
               <div className="sticky top-24">
-                <div className="rounded-2xl overflow-hidden shadow-card mb-6 w-full min-h-[300px] max-h-[400px] md:h-full relative">
+                <div className="rounded-2xl overflow-hidden shadow-card mb-6 h-[350px] w-auto md:h-[400px] md:w-[350px] relative">
                   <Image
                     src={team?.profileImage as string}
                     alt={team.name}
                     fill
-                    className="w-full aspect-square object-cover"
+                    className="w-full object-cover"
                   />
                 </div>
 

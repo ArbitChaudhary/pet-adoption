@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { PetCard } from "@/components/ui/cards/pet-card";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { IPet } from "../(pages)/pets/_common/pet-types";
+import { IPet } from "../pets/(pets)/_common/pet-types";
 
 interface PetsProps {
   pets: IPet[] | [];
@@ -12,7 +12,7 @@ const Pets = ({ pets }: PetsProps) => {
   const featuredPets = pets?.slice(0, 4) ?? [];
   return (
     <section className="py-16 md:py-24 bg-muted/30">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2
             className="text-3xl md:text-4xl font-bold text-foreground mb-4"

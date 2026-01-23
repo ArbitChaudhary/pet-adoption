@@ -1,6 +1,6 @@
 "use client";
 
-import { IPet } from "@/app/(pages)/pets/_common/pet-types";
+import { IPet } from "@/app/pets/(pets)/_common/pet-types";
 import { Button } from "@/components/ui/button";
 import { Calendar, PawPrint } from "lucide-react";
 import Description from "./description";
@@ -24,11 +24,11 @@ const Details = ({ pet }: DetailsProps) => {
         gender: pet?.gender,
         dimension: pet?.dimension,
         image: pet?.image,
-      })
+      }),
     );
   };
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <div>
         <h1
           className="text-4xl md:text-5xl font-bold text-foreground mb-2"
@@ -38,6 +38,20 @@ const Details = ({ pet }: DetailsProps) => {
         </h1>
         <p className="text-xl text-muted-foreground">{pet.breed}</p>
       </div>
+      {/* <div className="bg-gradient-warm rounded-2xl p-6 ">
+        <h3
+          className="text-xl font-bold mb-2"
+          style={{ fontFamily: "Fredoka, sans-serif" }}
+        >
+          Adoption Fee
+        </h3> */}
+      <div>
+        <p className="text-3xl font-bold text-primary">Rs. {pet?.price}</p>
+        <p className="text-sm opacity-90 mt-1">
+          Includes vaccinations, microchip & health check
+        </p>
+      </div>
+      {/* </div> */}
 
       <div className="flex flex-wrap gap-4">
         <div className="flex items-center gap-2 bg-muted/50 rounded-full px-4 py-2">
@@ -51,20 +65,6 @@ const Details = ({ pet }: DetailsProps) => {
       </div>
 
       <Description description={pet?.description} name={pet?.name} />
-
-      <div className="bg-gradient-warm rounded-2xl p-6 ">
-        <h3
-          className="text-xl font-bold mb-2"
-          style={{ fontFamily: "Fredoka, sans-serif" }}
-        >
-          Adoption Fee
-        </h3>
-        <p className="text-3xl font-bold">Rs. {pet?.price}</p>
-        <p className="text-sm opacity-90 mt-1">
-          Includes vaccinations, microchip & health check
-        </p>
-      </div>
-
       <div className="flex flex-col sm:flex-row gap-4">
         <Button
           size="lg"

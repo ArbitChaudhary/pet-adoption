@@ -3,7 +3,7 @@ import About from "./about";
 import Features from "./features";
 import Hero from "./hero";
 import Pets from "./pets";
-import { IPet } from "../(pages)/pets/_common/pet-types";
+import { IPet } from "../pets/(pets)/_common/pet-types";
 
 interface SectionHomeProps {
   pets: IPet[];
@@ -11,13 +11,13 @@ interface SectionHomeProps {
 
 const SectionHome = ({ pets }: SectionHomeProps) => {
   return (
-    <div className="max-w-7xl mx-auto">
+    <>
       <Hero />
       <Features />
       <Pets pets={pets} />
       <About />
       <Newsletter />
-    </div>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 const Stats = () => {
   return (
     <section className="py-16 md:py-24 gradient-warm">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-primary-foreground">
           <div>
             <div

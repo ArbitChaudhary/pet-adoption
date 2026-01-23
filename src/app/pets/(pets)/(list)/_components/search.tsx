@@ -38,8 +38,8 @@ function SearchSection() {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
   return (
-    <section className="py-12 md:py-20 gradient-hero">
-      <div className="container text-center">
+    <section className="px-4 md:px-2 py-12 md:py-20 gradient-hero">
+      <div className="container text-center mx-auto">
         <h1
           className="text-4xl md:text-5xl font-bold text-foreground mb-4"
           style={{ fontFamily: "Fredoka, sans-serif" }}

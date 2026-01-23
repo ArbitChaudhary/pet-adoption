@@ -1,4 +1,4 @@
-import { IPet } from "./(pages)/pets/_common/pet-types";
+import { IPet } from "./pets/(pets)/_common/pet-types";
 import SectionHome from "./_home-components/section-home";
 
 export default async function Home() {

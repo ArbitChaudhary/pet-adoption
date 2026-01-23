@@ -15,7 +15,7 @@ const Hero = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-transparent" />
       </div>
-      <div className="container relative z-10">
+      <div className="container relative z-10 mx-auto">
         <div className="max-w-xl">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in">
             <Heart className="h-4 w-4" />

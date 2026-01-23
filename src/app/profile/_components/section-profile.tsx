@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-// import { useAuth } from "@/hooks/useAuth";
-// import { useCart } from "@/hooks/useCart";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,16 +23,16 @@ import {
   Settings,
   LogOut,
   Shield,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/hooks/redux";
+import ProfileLayout from "./profile-layout";
 
 export default function SectionProfile() {
   const router = useRouter();
-  //   const { user, signOut, isLoading } = useAuth();
   const { user } = useAppSelector((state) => state.global);
-  //   const { cart } = useCart();
   const [isUpdating, setIsUpdating] = useState(false);
 
   // Redirect if not logged in
@@ -69,37 +67,50 @@ export default function SectionProfile() {
 
   return (
     <>
-      <div className="container py-8 md:py-12">
+      <div className="container px-4 py-8 md:py-12 mx-auto">
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
-          <Avatar className="h-24 w-24 border-4 border-primary/20">
-            <AvatarFallback className="text-2xl font-bold bg-primary/10 text-primary">
-              {userInitials}
-            </AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <Avatar className="h-24 w-24 md:h-28 md:w-28 border-4 border-background shadow-xl">
+              <AvatarFallback className="text-2xl md:text-3xl font-bold bg-primary text-primary-foreground">
+                {userInitials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="absolute -bottom-1 -right-1 bg-green-500 h-5 w-5 rounded-full border-2 border-background" />
+          </div>
           <div className="flex-1">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              {user?.name}
-            </h1>
-            <p className="text-muted-foreground flex items-center gap-2">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="flex flex-col">
+                <span className="block text-sm md:text-base font-medium text-foreground">
+                  Welcome,
+                </span>
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                  {user?.name}
+                </h1>
+              </div>
+            </div>
+            <p className="text-muted-foreground flex items-center gap-2 mb-2">
               <Mail className="h-4 w-4" />
               {user?.email}
             </p>
-            <p className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
-              <Calendar className="h-4 w-4" />
-              Member since {joinDate}
-            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge variant="secondary" className="gap-1">
+                <Calendar className="h-3 w-3" />
+                Member since {joinDate}
+              </Badge>
+              <Badge className="gap-1 bg-green-500/10 text-green-600 border-green-500/20">
+                <Shield className="h-3 w-3" />
+                Verified
+              </Badge>
+            </div>
           </div>
-          <Badge variant="secondary" className="gap-1">
-            <Shield className="h-3 w-3" />
-            Verified
-          </Badge>
         </div>
 
         <Separator className="mb-8" />
+        <ProfileLayout />
 
         {/* Profile Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
+        {/* <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full md:w-auto grid-cols-3 md:inline-flex">
             <TabsTrigger value="overview" className="gap-2">
               <User className="h-4 w-4 hidden md:inline" />
@@ -113,9 +124,10 @@ export default function SectionProfile() {
               <Settings className="h-4 w-4 hidden md:inline" />
               Settings
             </TabsTrigger>
-          </TabsList>
+          </TabsList> */}
 
-          {/* Overview Tab */}
+        {/* Overview Tab */}
+        <Tabs>
           <TabsContent value="overview" className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {/* Stats Card */}

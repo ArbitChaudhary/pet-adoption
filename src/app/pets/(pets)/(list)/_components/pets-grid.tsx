@@ -10,7 +10,7 @@ interface PetsGridProps {
 
 const PetsGrid = ({ pets }: PetsGridProps) => {
   return (
-    <section className="py-12 md:py-16">
+    <section className="px-4 md:px-2 py-12 md:py-16">
       <div className="container mx-auto">
         {/* Results Info */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
