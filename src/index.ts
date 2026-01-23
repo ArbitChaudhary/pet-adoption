@@ -10,6 +10,7 @@ import teamRoute from "./routes/team.route.ts";
 import blogRoute from "./routes/blog.route.ts";
 import petRoute from "./routes/pet.route.ts";
 import orderRoute from "./routes/orders.route.ts";
+import wishlistRoute from "./routes/wishlist.route.ts";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use("/api/v1/teams", teamRoute);
 app.use("/api/v1/blogs", blogRoute);
 app.use("/api/v1/pets", petRoute);
 app.use("/api/v1/orders", orderRoute);
+app.use("/api/v1/wishlist", wishlistRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
