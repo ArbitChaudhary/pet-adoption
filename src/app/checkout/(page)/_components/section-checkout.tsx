@@ -20,7 +20,7 @@ const SectionCheckout = () => {
 
   if (!user) {
     return (
-      <div className="container py-20 text-center">
+      <div className="container py-20 text-center mx-auto px-4">
         <h1 className="text-3xl font-bold mb-4">Please Sign In</h1>
         <p className="text-muted-foreground mb-6">
           You need to be signed in to complete your adoption.
@@ -33,7 +33,7 @@ const SectionCheckout = () => {
   }
   if (cart.length === 0) {
     return (
-      <div className="container py-20 text-center">
+      <div className="container py-20 text-center mx-auto px-4">
         <h1 className="text-3xl font-bold mb-4">Your Cart is Empty</h1>
         <p className="text-muted-foreground mb-6">
           Browse our pets and find your perfect companion.
@@ -44,7 +44,7 @@ const SectionCheckout = () => {
   }
   return (
     <>
-      <div className="container py-8 md:py-12">
+      <div className="container py-8 md:py-12 mx-auto px-4">
         <Button
           variant="ghost"
           className="mb-6"

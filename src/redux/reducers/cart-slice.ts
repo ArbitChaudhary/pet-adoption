@@ -25,7 +25,7 @@ export const cartSlice = createSlice({
     addToCart: (state, action: PayloadAction<ICartItem>) => {
       const newItem = action.payload;
       const existingItem = state.cart.find(
-        (item) => item.petId === newItem.petId
+        (item) => item.petId === newItem.petId,
       );
       if (existingItem) {
         return;
@@ -35,7 +35,7 @@ export const cartSlice = createSlice({
         state.totalQuantity++;
         state.totalAmount = state.cart.reduce(
           (acc, item) => acc + item.price,
-          0
+          0,
         );
       }
     },
@@ -49,7 +49,7 @@ export const cartSlice = createSlice({
         state.totalQuantity--;
         state.totalAmount = state.cart.reduce(
           (acc, item) => acc + item.price,
-          0
+          0,
         );
       }
     },

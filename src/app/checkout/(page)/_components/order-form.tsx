@@ -1,15 +1,21 @@
 "use client";
 
-import { sendOrder } from "@/app/api/order/order";
 import ControlledInput from "@/components/reusables/controlled-input";
 import ControlledPhoneInput from "@/components/reusables/controlled-phone-input";
 import ControlledTextarea from "@/components/reusables/controlled-textarea";
 import ButtonLoading from "@/components/ui/buttons/loading-button";
 import { useAppSelector } from "@/hooks/redux";
+import { useOrderCheckoutMutation } from "@/redux/actions/order-slice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
+import { IOrder } from "../../common/checkout-types";
+import { useRouter } from "next/navigation";
+import ControlledRadio from "@/components/reusables/controlled-radio";
+import creditCard from "@/assets/debit-card.png";
+import stripeIcon from "@/assets/stripe-logo.png";
+import cashIcon from "@/assets/cash.png";
 
 export const orderSchema = z.object({
   userName: z
@@ -19,11 +25,30 @@ export const orderSchema = z.object({
     .string({ error: "Email is required" })
     .email("Invalid email address"),
   userPhone: z.string({ error: "Phone number is required" }),
-  userAddress: z.string({ error: "Address is required" }).min(5),
+  userAddress: z.string({ error: "Address is required" }),
   message: z.string().optional(),
+  paymentMethod: z.string({ error: "Choose a payment method" }),
 });
 
 export type OrderInput = z.infer<typeof orderSchema>;
+
+const radioOptions = [
+  {
+    label: "Cash on Delivery",
+    value: "cash_on_delivery",
+    icon: cashIcon,
+  },
+  {
+    label: "Stripe",
+    value: "stripe",
+    icon: stripeIcon,
+  },
+  {
+    label: "Credit Card",
+    value: "credit_card",
+    icon: creditCard,
+  },
+];
 
 const OrderForm = () => {
   const { user } = useAppSelector((state) => state.global);
@@ -40,21 +65,32 @@ const OrderForm = () => {
       userPhone: user?.phone || undefined,
     },
   });
+  const router = useRouter();
 
+  const [orderCheckout, { isLoading }] = useOrderCheckoutMutation();
   const onSubmit = async (data: z.infer<typeof orderSchema>) => {
     try {
       const orderData = {
         ...data,
-        userId: user?._id,
+        userId: user!._id,
+        message: data.message || "",
         orderItems: cart,
+        status: "pending",
         totalAmount: cart.reduce((total, item) => total + item?.price, 0),
+        paymentStatus: "pending",
       };
-      await sendOrder(orderData);
 
-      toast.success("Order submitted successfully");
-    } catch (error) {
+      const response = await orderCheckout(orderData as IOrder).unwrap();
+      if (response.session?.url) {
+        router.push(response.session.url);
+      }
+      toast.success("Checkout successful");
+      // eslint-disable-next-line
+    } catch (error: any) {
       console.log(error);
-      toast.error("Failed to submit order. Please try again.");
+      toast.error(
+        error?.data?.message || error?.message || "Failed to checkout",
+      );
     }
   };
   return (
@@ -95,7 +131,19 @@ const OrderForm = () => {
             label="Message (Optional)"
           />
         </div>
-        <ButtonLoading type="submit" buttonText="Submit" />
+        <div className="col-span-2">
+          <ControlledRadio
+            control={control}
+            name="paymentMethod"
+            radioOptions={radioOptions || []}
+            label="Payment Method"
+          />
+        </div>
+        <ButtonLoading
+          type="submit"
+          buttonText="Submit"
+          isLoading={isLoading}
+        />
       </div>
     </form>
   );

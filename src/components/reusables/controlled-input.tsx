@@ -6,7 +6,6 @@ import {
   type PathValue,
   type FieldErrors,
   Controller,
-  RegisterOptions,
 } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
