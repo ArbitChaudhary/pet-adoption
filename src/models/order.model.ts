@@ -21,6 +21,9 @@ export interface IOrder extends Document {
   status: string;
   totalAmount: number;
   orderItems: IOrderItem[];
+  paymentIntentId?: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
 }
 
 export const OrderItemSchema = new Schema(
@@ -35,7 +38,7 @@ export const OrderItemSchema = new Schema(
     dimension: { type: String },
     image: { type: String },
   },
-  { _id: false }
+  { _id: false },
 );
 
 export const OrderSchema = new Schema(
@@ -48,8 +51,11 @@ export const OrderSchema = new Schema(
     orderItems: { type: [OrderItemSchema], required: true },
     status: { type: String, default: "Pending" },
     totalAmount: { type: Number, required: true },
+    paymentIntentId: { type: String },
+    paymentMethod: { type: String, required: true },
+    paymentStatus: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Order = mongoose.model<IOrder>("Order", OrderSchema);

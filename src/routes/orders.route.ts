@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  createCheckoutSession,
   createOrder,
   getOrderById,
   getOrders,
@@ -13,5 +14,6 @@ router.get("/", verifyAdmin, getOrders);
 router.post("/", createOrder);
 router.patch("/:id", updateOrderStatus);
 router.get("/:id", getOrderById);
+router.post("/create-checkout-session", createCheckoutSession);
 
 export default router;
