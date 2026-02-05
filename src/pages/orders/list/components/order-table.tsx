@@ -17,6 +17,7 @@ interface OrderTableProps {
     SetStateAction<{ page: number; pageSize: number }>
   >;
   handleOpenUpdateStatusModal: (id: string) => void;
+  handleOpenOrderDetailDialog: (id: string) => void;
 }
 
 const OrderTable = ({
@@ -25,6 +26,7 @@ const OrderTable = ({
   paginationModel,
   onPaginationModelChange,
   handleOpenUpdateStatusModal,
+  handleOpenOrderDetailDialog,
 }: OrderTableProps) => {
   const columns: GridColDef<IOrder>[] = [
     {
@@ -117,7 +119,10 @@ const OrderTable = ({
             alignItems: "center",
           }}
         >
-          <IconButton size="medium">
+          <IconButton
+            size="medium"
+            onClick={() => handleOpenOrderDetailDialog(params.row?._id)}
+          >
             <VisibilityIcon fontSize="medium" />
           </IconButton>
           <IconButton
@@ -140,7 +145,13 @@ const OrderTable = ({
       paginationMode="server"
       onPaginationModelChange={onPaginationModelChange}
       pageSizeOptions={[10, 20, 40]}
-      sx={{ height: "fit-content" }}
+      sx={{
+        height: "fit-content",
+        "& .MuiDataGrid-columnHeader": {
+          backgroundColor: "primary.main",
+          color: "primary.contrastText",
+        },
+      }}
     />
   );
 };

@@ -87,7 +87,13 @@ export default function UsersTable({
       rows={users}
       getRowId={(row) => row._id}
       columns={columns}
-      sx={{ width: "fit-content" }}
+      sx={{
+        width: "fit-content",
+        "& .MuiDataGrid-columnHeader": {
+          backgroundColor: "primary.main",
+          color: "white",
+        },
+      }}
       rowCount={rowCount}
       // pagination
       pageSizeOptions={[10, 30]}

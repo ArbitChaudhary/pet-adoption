@@ -18,6 +18,7 @@ interface TeamsTableProps {
     SetStateAction<{ page: number; pageSize: number }>
   >;
   rowCount: number;
+  handleDetailModalOpen: (id: string) => void;
 }
 
 export default function TeamsTable({
@@ -28,6 +29,7 @@ export default function TeamsTable({
   paginationModel,
   onPaginationModelChange,
   rowCount,
+  handleDetailModalOpen,
 }: TeamsTableProps) {
   const columns: GridColDef<ITeam>[] = [
     {
@@ -109,7 +111,11 @@ export default function TeamsTable({
           }}
         >
           <IconButton size="medium">
-            <VisibilityIcon fontSize="medium" sx={{ color: "primary.main" }} />
+            <VisibilityIcon
+              fontSize="medium"
+              sx={{ color: "primary.main" }}
+              onClick={() => handleDetailModalOpen(params?.row?._id)}
+            />
           </IconButton>
           <IconButton size="medium">
             <EditIcon
@@ -144,6 +150,12 @@ export default function TeamsTable({
       onPaginationModelChange={onPaginationModelChange}
       paginationMode="server"
       pageSizeOptions={[2]}
+      sx={{
+        "& .MuiDataGrid-columnHeader": {
+          backgroundColor: "primary.main",
+          color: "white",
+        },
+      }}
     />
   );
 }

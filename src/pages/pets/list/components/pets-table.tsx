@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import type { Dispatch, SetStateAction } from "react";
+import { useTheme } from "@mui/material/styles";
 
 interface PetsTableProps {
   pets: IPet[];
@@ -28,6 +29,7 @@ const PetsTable = ({
   onPaginationModelChange,
   rowCount,
 }: PetsTableProps) => {
+  const theme = useTheme();
   const columns: GridColDef<IPet>[] = [
     {
       field: "image",
@@ -177,6 +179,13 @@ const PetsTable = ({
       paginationModel={paginationModel}
       paginationMode="server"
       onPaginationModelChange={onPaginationModelChange}
+      sx={{
+        "& .MuiDataGrid-columnHeader": {
+          backgroundColor: theme.palette.primary.main,
+          color: "white",
+          // maxHeight: "40px",
+        },
+      }}
     />
   );
 };

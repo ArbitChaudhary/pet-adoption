@@ -114,6 +114,12 @@ const BlogTable = ({
       rowCount={rowCount}
       pageSizeOptions={[10, 20, 40]}
       disableRowSelectionOnClick
+      sx={{
+        "& .MuiDataGrid-columnHeader": {
+          backgroundColor: "primary.main",
+          color: "white",
+        },
+      }}
     />
   );
 };

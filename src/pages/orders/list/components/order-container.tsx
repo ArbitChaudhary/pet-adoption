@@ -6,6 +6,7 @@ import SearchBox from "@/components/reusables/search-box";
 import { Box } from "@mui/material";
 import StatusFilter from "./status-filter";
 import UpdateStatusModal from "../../common/update-status-modal";
+import { OrderDetailDialog } from "./order-detail-dialog";
 
 const OrderContainer = () => {
   const [isUpdateStatusModalOpen, setIsUpdateStatusModalOpen] =
@@ -20,6 +21,8 @@ const OrderContainer = () => {
   });
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
+  const [isOrderDetailDialogOpen, setIsOrderDetailDialogOpen] =
+    useState<boolean>(false);
   const filter = {
     search: searchQuery,
     page: paginationModel.page,
@@ -40,6 +43,13 @@ const OrderContainer = () => {
     setIsUpdateStatusModalOpen(true);
   };
 
+  const handleOpenOrderDetailDialog = (id: string) => {
+    setSelectedOrderId(id);
+    setIsOrderDetailDialogOpen(true);
+  };
+  const handleCloseOrderDetailDialog = () => {
+    setIsOrderDetailDialogOpen(false);
+  };
   if (isLoading) {
     return <TriangleLoader />;
   }
@@ -71,12 +81,20 @@ const OrderContainer = () => {
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         handleOpenUpdateStatusModal={handleOpenUpdateStatusModal}
+        handleOpenOrderDetailDialog={handleOpenOrderDetailDialog}
       />
       {isUpdateStatusModalOpen && (
         <UpdateStatusModal
           isOpen={isUpdateStatusModalOpen}
           onClose={handleCloseUpdateStatusModal}
           orderId={selectedOrderId}
+        />
+      )}
+      {isOrderDetailDialogOpen && (
+        <OrderDetailDialog
+          orderId={selectedOrderId}
+          isOpen={isOrderDetailDialogOpen}
+          onClose={handleCloseOrderDetailDialog}
         />
       )}
     </>

@@ -7,6 +7,7 @@ export interface IOderItem {
   gender?: string;
   age?: number;
   dimension?: string;
+  image?: string;
 }
 
 export interface IOrder {

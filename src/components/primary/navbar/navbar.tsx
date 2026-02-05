@@ -1,8 +1,8 @@
-import { Badge, Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useColorScheme, useTheme } from "@mui/material/styles";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import Notifications from "./notifications";
 
 function Navbar() {
   const theme = useTheme();
@@ -28,23 +28,7 @@ function Navbar() {
           Navbar
         </Typography>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <Badge
-            badgeContent={2}
-            color="error"
-            // sx={{
-            //   "& .MuiBadge-badge": {
-            //     right: 2,
-            //     top: 5,
-            //   },
-            // }}
-          >
-            <NotificationsNoneIcon
-              sx={{
-                color: theme.palette.primary.contrastText,
-                cursor: "pointer",
-              }}
-            />
-          </Badge>
+          <Notifications />
           {theme.palette.mode === "light" ? (
             <DarkModeIcon
               sx={{

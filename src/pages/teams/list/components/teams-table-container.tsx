@@ -7,9 +7,11 @@ import DeleteModal from "@/components/modal/delete-modal";
 import { useNavigate } from "react-router-dom";
 import SearchBox from "@/components/reusables/search-box";
 import { Box } from "@mui/material";
+import PetDialog from "./pet-dialog";
 
 function TeamsTableContainer() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
   const [selectedTeamId, setSelectedTeamId] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [paginationModel, setPaginationModel] = useState<{
@@ -35,6 +37,13 @@ function TeamsTableContainer() {
   };
   const handleDeleteModalClose = () => {
     setIsDeleteModalOpen(false);
+  };
+  const handleDetailModalOpen = (id: string) => {
+    setSelectedTeamId(id);
+    setIsDetailModalOpen(true);
+  };
+  const handleCloseDetailModal = () => {
+    setIsDetailModalOpen(false);
   };
 
   const handleDelete = async () => {
@@ -66,6 +75,7 @@ function TeamsTableContainer() {
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         rowCount={memoizedRow as number}
+        handleDetailModalOpen={handleDetailModalOpen}
       />
       {isDeleteModalOpen && (
         <DeleteModal
@@ -73,6 +83,13 @@ function TeamsTableContainer() {
           onClose={handleDeleteModalClose}
           handleDelete={handleDelete}
           isLoading={isDeleting}
+        />
+      )}
+      {isDetailModalOpen && (
+        <PetDialog
+          id={selectedTeamId}
+          isOpen={isDetailModalOpen}
+          onClose={handleCloseDetailModal}
         />
       )}
     </>
