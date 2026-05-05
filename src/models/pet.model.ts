@@ -17,6 +17,7 @@ export interface IPet {
   disabled?: boolean;
   disability?: string;
   enableDiscount?: boolean;
+  isAdopted: boolean;
 }
 
 export const petSchema = new mongoose.Schema<IPet>(
@@ -41,8 +42,9 @@ export const petSchema = new mongoose.Schema<IPet>(
     disabled: { type: Boolean, default: false },
     disability: { type: String, default: "" },
     enableDiscount: { type: Boolean, default: false },
+    isAdopted: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Pet = mongoose.model<IPet>("Pet", petSchema);

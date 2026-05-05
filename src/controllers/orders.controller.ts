@@ -26,7 +26,8 @@ export const getOrders = async (req: Request, res: Response) => {
 
     const orders = await Order.find(query)
       .skip(pageNumber * limitNumber)
-      .limit(limitNumber);
+      .limit(limitNumber)
+      .sort({ createdAt: -1 });
     res.status(200).json({ orders, total, totalPages });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
@@ -44,9 +45,10 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
 
     orderItems.forEach(async (item: IOrderItem) => {
       const pet = await Pet.findOneAndUpdate(
-        { _id: item?.petId, isAvailable: true },
+        { _id: item?.petId, isAdopted: false },
         {
           $set: {
+            isAdopted: true,
             isAvailable: false,
           },
         },
@@ -90,9 +92,10 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
     const { orderItems } = req.body;
     orderItems.forEach(async (item: IOrderItem) => {
       const pet = await Pet.findOneAndUpdate(
-        { _id: item?.petId, isAvailable: false },
+        { _id: item?.petId, isAdopted: true },
         {
           $set: {
+            isAdopted: false,
             isAvailable: true,
           },
         },

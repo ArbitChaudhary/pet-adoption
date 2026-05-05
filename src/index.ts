@@ -15,6 +15,7 @@ import webhookRoute from "./routes/webhook.route.ts";
 import notificationRoute from "./routes/notification.route.ts";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import analyticsRoute from "./routes/analytics.route.ts";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ const PORT = process.env.PORT || 8000;
 
 // connect to the database
 connectDB();
+// migrateData();
 
 export const io = new Server(server, {
   cors: {
@@ -48,6 +50,7 @@ app.use("/api/v1/pets", petRoute);
 app.use("/api/v1/orders", orderRoute);
 app.use("/api/v1/wishlist", wishlistRoute);
 app.use("/api/v1/notifications", notificationRoute);
+app.use("/api/v1/analytics", analyticsRoute);
 
 io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
