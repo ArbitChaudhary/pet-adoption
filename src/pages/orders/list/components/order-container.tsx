@@ -1,4 +1,3 @@
-import TriangleLoader from "@/components/ui/triangle-loader";
 import { useGetOrdersQuery } from "../../common/order-api";
 import OrderTable from "./order-table";
 import { useMemo, useState } from "react";
@@ -7,6 +6,7 @@ import { Box } from "@mui/material";
 import StatusFilter from "./status-filter";
 import UpdateStatusModal from "../../common/update-status-modal";
 import { OrderDetailDialog } from "./order-detail-dialog";
+import TableSkeleton from "@/components/ui/table-skeleton/table-skeleton";
 
 const OrderContainer = () => {
   const [isUpdateStatusModalOpen, setIsUpdateStatusModalOpen] =
@@ -51,7 +51,7 @@ const OrderContainer = () => {
     setIsOrderDetailDialogOpen(false);
   };
   if (isLoading) {
-    return <TriangleLoader />;
+    return <TableSkeleton />;
   }
   if (error) {
     return (

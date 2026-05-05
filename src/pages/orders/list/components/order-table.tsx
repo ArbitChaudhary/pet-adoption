@@ -8,6 +8,11 @@ import { Box, IconButton, Typography } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import type { Dispatch, SetStateAction } from "react";
+import { shadows } from "@/theme/shadows";
+import {
+  getOrderPaymentStatusBgColor,
+  getOrderStatusBgColor,
+} from "@/libs/order-status";
 
 interface OrderTableProps {
   orders: IOrder[];
@@ -36,6 +41,8 @@ const OrderTable = ({
       filterable: false,
       editable: false,
       sortable: false,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "userName",
@@ -44,6 +51,8 @@ const OrderTable = ({
       filterable: false,
       editable: false,
       sortable: false,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "userEmail",
@@ -52,6 +61,8 @@ const OrderTable = ({
       filterable: false,
       editable: false,
       sortable: false,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "userPhone",
@@ -60,6 +71,8 @@ const OrderTable = ({
       filterable: false,
       editable: false,
       sortable: false,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "totalAmount",
@@ -68,30 +81,41 @@ const OrderTable = ({
       filterable: false,
       editable: false,
       sortable: false,
+      align: "center",
+      headerAlign: "center",
     },
     {
-      field: "orders",
-      headerName: "Order Items",
+      field: "paymentStatus",
+      headerName: "Payment Status",
       width: 150,
       filterable: false,
       editable: false,
       sortable: false,
+      align: "center",
+      headerAlign: "center",
       renderCell: (params: GridRenderCellParams<IOrder>) => (
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            gap: 1,
+            justifyContent: "center",
             alignItems: "center",
-            height: "100%",
             width: "100%",
+            height: "100%",
           }}
         >
-          {params.row?.orderItems?.map((item) => (
-            <Typography key={item?.petId} variant="button">
-              {item?.name}({item?.breed})
-            </Typography>
-          ))}
+          <Typography
+            sx={{
+              px: 2,
+              borderRadius: 3,
+              boxShadow: shadows[2],
+              color: "white",
+              bgcolor: getOrderPaymentStatusBgColor(params?.value),
+              textTransform: "capitalize",
+              fontSize: "14px",
+            }}
+          >
+            {params?.value}
+          </Typography>
         </Box>
       ),
     },
@@ -102,6 +126,33 @@ const OrderTable = ({
       filterable: false,
       editable: false,
       sortable: false,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<IOrder>) => (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Typography
+            sx={{
+              px: 2,
+              borderRadius: 3,
+              boxShadow: shadows[2],
+              color: "white",
+              bgcolor: getOrderStatusBgColor(params?.value),
+              textTransform: "capitalize",
+              fontSize: "14px",
+            }}
+          >
+            {params?.value}
+          </Typography>
+        </Box>
+      ),
     },
     {
       field: "actions",
